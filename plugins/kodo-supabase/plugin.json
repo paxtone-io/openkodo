@@ -1,0 +1,41 @@
+{
+  "id": "kodo-supabase",
+  "name": "Kodo Supabase",
+  "version": "0.1.0",
+  "description": "Supabase integration for database schemas, migrations, Edge Functions, and hybrid ORM workflows",
+  "author": "Paxtone.io",
+  "license": "MIT",
+  "homepage": "https://github.com/paxtone-io/openkodo",
+  "repository": "https://github.com/paxtone-io/openkodo",
+  "min_cli_version": "0.1.0",
+  "category": "backend",
+  "tags": ["supabase", "database", "postgres", "edge-functions", "migrations"],
+  "agents": [
+    {
+      "name": "kodo-supa-architect",
+      "description": "Supabase database and API architecture design",
+      "model": "opus"
+    },
+    {
+      "name": "kodo-supa-migrator",
+      "description": "Database migration creation and management",
+      "model": "sonnet"
+    },
+    {
+      "name": "kodo-supa-edge-agent",
+      "description": "Supabase Edge Function development",
+      "model": "sonnet"
+    }
+  ],
+  "skills": [
+    "pxt-supa-db",
+    "pxt-supa-migrate",
+    "pxt-supa-edge",
+    "pxt-supa-decide"
+  ],
+  "install": {
+    "type": "git",
+    "url": "https://github.com/paxtone-io/openkodo.git",
+    "path": "plugins/kodo-supabase"
+  }
+}

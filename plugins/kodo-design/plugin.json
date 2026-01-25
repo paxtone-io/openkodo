@@ -1,0 +1,40 @@
+{
+  "id": "kodo-design",
+  "name": "Kodo Design",
+  "version": "0.1.0",
+  "description": "UI/UX design workflows with Design Bible principles and WCAG AAA accessibility compliance",
+  "author": "Paxtone.io",
+  "license": "MIT",
+  "homepage": "https://github.com/paxtone-io/openkodo",
+  "repository": "https://github.com/paxtone-io/openkodo",
+  "min_cli_version": "0.1.0",
+  "category": "design",
+  "tags": ["ui", "ux", "accessibility", "wcag", "design-system"],
+  "agents": [
+    {
+      "name": "kodo-design-agent",
+      "description": "UI component design with Design Bible principles",
+      "model": "opus"
+    },
+    {
+      "name": "kodo-a11y-auditor",
+      "description": "Accessibility audits for WCAG AAA compliance",
+      "model": "sonnet"
+    },
+    {
+      "name": "kodo-design-researcher",
+      "description": "Design inspiration research from Dribbble, Behance, 21st.dev",
+      "model": "haiku"
+    }
+  ],
+  "skills": [
+    "pxt-design",
+    "pxt-design-audit",
+    "pxt-design-system"
+  ],
+  "install": {
+    "type": "git",
+    "url": "https://github.com/paxtone-io/openkodo.git",
+    "path": "plugins/kodo-design"
+  }
+}

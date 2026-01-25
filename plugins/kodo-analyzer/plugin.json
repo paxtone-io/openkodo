@@ -1,0 +1,59 @@
+{
+  "id": "kodo-analyzer",
+  "name": "Kodo Analyzer",
+  "version": "0.1.0",
+  "description": "Comprehensive codebase analysis for security, performance, documentation, and health assessment",
+  "author": "Paxtone.io",
+  "license": "MIT",
+  "homepage": "https://github.com/paxtone-io/openkodo",
+  "repository": "https://github.com/paxtone-io/openkodo",
+  "min_cli_version": "0.1.0",
+  "category": "analysis",
+  "tags": ["security", "performance", "documentation", "audit", "health-check"],
+  "agents": [
+    {
+      "name": "kodo-codebase-analyzer",
+      "description": "Main orchestrator for comprehensive codebase analysis",
+      "model": "opus"
+    },
+    {
+      "name": "kodo-security-analyzer",
+      "description": "Security vulnerability analysis with CVSS ratings",
+      "model": "sonnet"
+    },
+    {
+      "name": "kodo-performance-analyzer",
+      "description": "Performance bottleneck analysis and optimization",
+      "model": "sonnet"
+    },
+    {
+      "name": "kodo-api-analyzer",
+      "description": "API endpoint analysis and coverage",
+      "model": "sonnet"
+    },
+    {
+      "name": "kodo-database-analyzer",
+      "description": "Database schema analysis and optimization",
+      "model": "sonnet"
+    },
+    {
+      "name": "kodo-documentation-analyzer",
+      "description": "Documentation coverage and accuracy analysis",
+      "model": "haiku"
+    },
+    {
+      "name": "kodo-dependencies-analyzer",
+      "description": "Dependency analysis and security audit",
+      "model": "haiku"
+    }
+  ],
+  "skills": [
+    "pxt-analyze",
+    "pxt-analyzer"
+  ],
+  "install": {
+    "type": "git",
+    "url": "https://github.com/paxtone-io/openkodo.git",
+    "path": "plugins/kodo-analyzer"
+  }
+}
