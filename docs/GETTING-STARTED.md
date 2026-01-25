@@ -1,26 +1,44 @@
 # Getting Started with OpenKodo
 
-OpenKodo (古道 - "Ancient Path") is a context management CLI and self-learning system for AI coding tools. It helps AI assistants remember your patterns, preferences, and project-specific knowledge across sessions.
+OpenKodo (古道 - "Ancient Path") is a context management CLI and self-learning system for AI coding tools.
+
+## Table of Contents
+
+- [Installation](#installation)
+- [Quick Start](#quick-start)
+- [Project Structure](#project-structure)
+- [Core Workflows](#core-workflows)
+- [Claude Code Integration](#claude-code-integration)
+- [Next Steps](#next-steps)
+
+---
 
 ## Installation
 
-### Quick Install
+### macOS / Linux
 
-**macOS / Linux:**
 ```bash
 curl -fsSL https://raw.githubusercontent.com/paxtone-io/openkodo/main/install.sh | bash
 ```
 
-**Windows (PowerShell):**
+### Windows (PowerShell)
+
 ```powershell
 irm https://raw.githubusercontent.com/paxtone-io/openkodo/main/install.ps1 | iex
 ```
 
-### Manual Installation
+### Manual Download
 
-1. Download the appropriate binary from [Releases](https://github.com/paxtone-io/openkodo/releases)
-2. Extract the archive
-3. Move `kodo` to a directory in your PATH (e.g., `/usr/local/bin/`)
+Download the appropriate binary from [Releases](https://github.com/paxtone-io/openkodo/releases):
+
+| Platform | File |
+|----------|------|
+| macOS Intel | `kodo-v*-x86_64-apple-darwin.tar.gz` |
+| macOS Apple Silicon | `kodo-v*-aarch64-apple-darwin.tar.gz` |
+| Linux x64 | `kodo-v*-x86_64-unknown-linux-gnu.tar.gz` |
+| Linux ARM64 | `kodo-v*-aarch64-unknown-linux-gnu.tar.gz` |
+| Windows x64 | `kodo-v*-x86_64-pc-windows-msvc.zip` |
+| Windows ARM64 | `kodo-v*-aarch64-pc-windows-msvc.zip` |
 
 ### Verify Installation
 
@@ -28,7 +46,11 @@ irm https://raw.githubusercontent.com/paxtone-io/openkodo/main/install.ps1 | iex
 kodo --version
 ```
 
-## Initialize a Project
+---
+
+## Quick Start
+
+### Initialize a Project
 
 Navigate to your project directory and run:
 
@@ -37,98 +59,211 @@ cd your-project
 kodo init
 ```
 
-This creates a `.kodo/` directory with:
-- `context-tree/` - Hierarchical knowledge storage
-- `learnings/` - Captured patterns by confidence level
-- `config.json` - Project configuration
+This creates:
 
-## Basic Usage
+- `kodo.toml` - Project configuration file (in project root)
+- `.kodo/` directory containing:
+  - `context-tree/` - Hierarchical knowledge storage
+  - `learnings/` - Captured patterns by confidence level
+  - `logs/` - Debug and trace logs
 
-### Add Context
+### Analyze Your Codebase
 
-Store project-specific knowledge:
-
-```bash
-# Add context with a topic
-kodo curate --topic architecture "We use hexagonal architecture with ports and adapters"
-
-# Add context from a file
-kodo curate --topic testing --file ./docs/testing-guide.md
-```
-
-### Query Context
-
-Search your accumulated knowledge:
+Run the analyzer to automatically detect your project's structure:
 
 ```bash
-kodo query "how do we handle authentication?"
-kodo query "database migration patterns" --topic database
+kodo analyze
 ```
 
-### Capture Learnings
+This scans for:
+- Tech stack (languages, frameworks, dependencies)
+- Architecture patterns (MVC, hexagonal, etc.)
+- Database schemas and migrations
+- API endpoints
+- Test structure
 
-After a coding session, capture what you learned:
+### Enable Auto-Reflection
+
+Set up automatic learning capture:
 
 ```bash
-kodo reflect
+kodo reflect on
 ```
 
-This analyzes your recent work and extracts:
-- **HIGH confidence**: Corrections and explicit preferences → auto-applied
-- **MEDIUM confidence**: Successful patterns → recommended
-- **LOW confidence**: Observations → tracked for patterns
+This enables kodo to capture patterns and insights from your coding sessions.
 
-### Analyze Codebase
+---
 
-Auto-discover patterns and generate context:
+## Project Structure
+
+After initialization, your project will have:
+
+```
+your-project/
+├── kodo.toml              # Project configuration
+├── .kodo/
+│   ├── context-tree/      # Organized knowledge
+│   │   ├── architecture/
+│   │   ├── database/
+│   │   └── ...
+│   ├── learnings/         # Captured patterns
+│   │   ├── high-confidence.md
+│   │   ├── medium-confidence.md
+│   │   └── pending-review.md
+│   └── logs/              # Debug logs
+└── ... (your project files)
+```
+
+### kodo.toml Configuration
+
+The main configuration file:
+
+```toml
+[project]
+name = "your-project"
+version = "0.1.0"
+
+[learning]
+auto_reflect = true
+confidence_threshold = "medium"
+
+[sync]
+remote = "origin"
+branch = "main"
+
+[integrations]
+github = false
+notion = false
+```
+
+See [CLI Reference - Configuration](CLI-REFERENCE.md#configuration) for all options.
+
+---
+
+## Core Workflows
+
+### 1. Capture Context Manually
+
+Add important knowledge about your codebase:
 
 ```bash
-kodo analyze                    # Run all analyzers
-kodo analyze --tech-stack       # Detect technologies used
-kodo analyze --architecture     # Identify architecture patterns
-kodo analyze --auto             # Auto-import findings
+# Add a context entry
+kodo curate --domain auth --topic jwt "Always validate tokens server-side"
+
+# Import from a file
+kodo curate --from ./docs/architecture.md --domain architecture
+
+# Interactive mode
+kodo curate --interactive
 ```
+
+### 2. Search Context
+
+Find relevant information:
+
+```bash
+# Simple search
+kodo query "authentication"
+
+# With format options
+kodo query "error handling" --format json --full
+
+# Interactive search
+kodo query --interactive
+```
+
+### 3. Review Learnings
+
+Manage captured patterns:
+
+```bash
+# Show learning statistics
+kodo reflect --status
+
+# List all learnings
+kodo learn list
+
+# Review pending learnings
+kodo learn review
+
+# Promote a learning to higher confidence
+kodo learn promote <id>
+```
+
+### 4. Sync Your Context
+
+Keep your context synchronized:
+
+```bash
+# Sync to Git
+kodo sync
+
+# Sync and push
+kodo sync --push
+
+# Sync to cloud (requires token)
+kodo sync --cloud-only
+```
+
+---
 
 ## Claude Code Integration
 
-### Install Plugin via Claude Code
+### Install as Plugin
 
-In Claude Code, use the `/plugin` command:
+In Claude Code:
 1. Type `/plugin`
 2. Select "Add Marketplace"
-3. Enter: `paxtone-io/openkodo`
-4. Select plugins to install
+3. Enter `paxtone-io/openkodo`
 
-### Auto-Reflection Hooks
+Or install specific plugins via CLI:
 
-Enable automatic learning capture:
+```bash
+kodo plugin add design      # UI/UX design workflows
+kodo plugin add supabase    # Supabase integration
+kodo plugin add posthog     # PostHog analytics
+kodo plugin add analyzer    # Advanced analysis
+```
+
+### Install Hooks
+
+Enable automatic reflection during Claude Code sessions:
 
 ```bash
 kodo hooks install
 ```
 
-This sets up hooks that:
+This installs hooks that:
 - Load context at session start
-- Capture learnings before context compaction
-- Prompt for reflection at session end
+- Capture learnings during coding
+- Sync learnings at session end
 
-## Configuration
+Check hook status:
 
-Edit `.kodo/config.json`:
-
-```json
-{
-  "project_name": "my-project",
-  "auto_inject": true,
-  "confidence_threshold": "medium",
-  "analyzers": {
-    "enabled": ["tech-stack", "architecture", "database"]
-  }
-}
+```bash
+kodo hooks status
 ```
+
+---
 
 ## Next Steps
 
-- [CLI Reference](./CLI-REFERENCE.md) - Full command documentation
-- [Plugin Development](./PLUGIN-DEVELOPMENT.md) - Create custom plugins
-- Check `kodo --help` for all available commands
+1. **Explore Commands**: See [CLI Reference](CLI-REFERENCE.md) for all commands
+2. **Install Plugins**: Add domain-specific capabilities with `kodo plugin list --available`
+3. **Set Up Integrations**: Configure GitHub and Notion in `kodo.toml`
+4. **Join the Community**: Report issues at [GitHub](https://github.com/paxtone-io/openkodo/issues)
+
+### Useful Commands
+
+```bash
+# Check project status
+kodo status
+
+# Update kodo
+kodo update check
+kodo update apply
+
+# Get help
+kodo --help
+kodo <command> --help
+```

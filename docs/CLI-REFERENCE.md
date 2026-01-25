@@ -2,159 +2,267 @@
 
 Complete command reference for the `kodo` CLI.
 
+## Table of Contents
+
+- [Global Options](#global-options)
+- [Commands](#commands)
+  - [kodo init](#kodo-init)
+  - [kodo analyze](#kodo-analyze)
+  - [kodo reflect](#kodo-reflect)
+  - [kodo curate](#kodo-curate)
+  - [kodo import](#kodo-import)
+  - [kodo query](#kodo-query)
+  - [kodo status](#kodo-status)
+  - [kodo sync](#kodo-sync)
+  - [kodo track](#kodo-track)
+  - [kodo docs](#kodo-docs)
+  - [kodo flow](#kodo-flow)
+  - [kodo plugin](#kodo-plugin)
+  - [kodo context](#kodo-context)
+  - [kodo hooks](#kodo-hooks)
+  - [kodo learn](#kodo-learn)
+  - [kodo index](#kodo-index)
+  - [kodo update](#kodo-update)
+- [Configuration](#configuration)
+  - [kodo.toml Reference](#kodotoml-reference)
+  - [Environment Variables](#environment-variables)
+  - [Credentials File](#credentials-file)
+- [Exit Codes](#exit-codes)
+
+---
+
 ## Global Options
 
-```
--h, --help       Print help
--V, --version    Print version
--v, --verbose    Increase verbosity (can be repeated: -vv, -vvv)
--q, --quiet      Suppress non-essential output
-```
+These options are available for all commands:
+
+| Option | Description |
+|--------|-------------|
+| `-v, --verbose` | Enable verbose output (INFO level) |
+| `--debug` | Enable debug output (DEBUG level) |
+| `--trace` | Enable trace output (TRACE level, very verbose) |
+| `--log-file <PATH>` | Custom log file path (default: `.kodo/logs/YYYY-MM-DD.log`) |
+| `--no-log-file` | Disable file logging entirely |
+| `-h, --help` | Print help |
+| `-V, --version` | Print version |
+
+---
 
 ## Commands
 
 ### `kodo init`
 
-Initialize OpenKodo in the current directory.
+Initialize a new kodo project.
 
 ```bash
 kodo init [OPTIONS]
 ```
 
 **Options:**
-- `--force` - Overwrite existing `.kodo/` directory
-- `--template <name>` - Use a project template (rust, typescript, python)
+
+| Option | Description |
+|--------|-------------|
+| `--plugin` | Create Claude Code plugin structure |
+| `--hooks` | Generate hooks.json for lifecycle events |
+| `--add-only` | Merge with existing setup, preserving user content. Only adds/updates kodo-managed sections |
+| `--force` | Backup existing setup and overwrite. Creates timestamped backup in `.kodo.backup/` |
 
 **Creates:**
-```
-.kodo/
-├── config.json
-├── context-tree/
-├── learnings/
-│   ├── high-confidence.md
-│   ├── medium-confidence.md
-│   └── pending-review.md
-└── routing.yaml
-```
 
----
-
-### `kodo curate` (alias: `c`)
-
-Add or manage context entries.
-
-```bash
-kodo curate [OPTIONS] [CONTENT]
-```
-
-**Options:**
-- `--topic <topic>` - Context topic/category
-- `--file <path>` - Read content from file
-- `--title <title>` - Entry title
-- `--edit` - Open in editor
-- `--list` - List all context entries
-- `--delete <id>` - Delete a context entry
-
-**Examples:**
-```bash
-# Add inline context
-kodo curate --topic auth "We use JWT with httpOnly cookies"
-
-# Add from file
-kodo curate --topic database --file ./docs/schema.md
-
-# List entries
-kodo curate --list
-
-# Edit interactively
-kodo curate --topic testing --edit
-```
-
----
-
-### `kodo query` (alias: `q`)
-
-Search accumulated context.
-
-```bash
-kodo query <SEARCH_TERM> [OPTIONS]
-```
-
-**Options:**
-- `--topic <topic>` - Filter by topic
-- `--limit <n>` - Max results (default: 10)
-- `--format <fmt>` - Output format: text, json, markdown
-- `--include-learnings` - Also search learnings
-
-**Examples:**
-```bash
-kodo query "authentication"
-kodo query "error handling" --topic api
-kodo query "migration" --format json
-```
-
----
-
-### `kodo reflect` (alias: `r`)
-
-Capture learnings from a coding session.
-
-```bash
-kodo reflect [OPTIONS] [SESSION_NOTES]
-```
-
-**Options:**
-- `--stdin` - Read session notes from stdin
-- `--file <path>` - Read session notes from file
-- `--hook <type>` - Called by hook (precompact, stop, sessionend)
-- `--auto` - Auto-categorize without confirmation
-- `--quiet` - Minimal output (for hooks)
-
-**Examples:**
-```bash
-# Interactive reflection
-kodo reflect
-
-# With notes
-kodo reflect "Fixed auth bug. Key insight: always validate tokens server-side"
-
-# From pipe (useful for hooks)
-echo "Session summary..." | kodo reflect --stdin --auto
-```
+- `kodo.toml` - Project configuration (in project root)
+- `.kodo/` directory containing:
+  - `context-tree/` - Hierarchical knowledge storage
+  - `learnings/` - Captured patterns by confidence level
+  - `logs/` - Debug and trace logs
+  - `routing.yaml.example` - Example routing rules
 
 ---
 
 ### `kodo analyze`
 
-Analyze codebase and generate context.
+Analyze codebase and generate context entries automatically.
 
 ```bash
 kodo analyze [OPTIONS]
 ```
 
-**Analyzers:**
-- `--tech-stack` - Detect languages, frameworks, dependencies
-- `--architecture` - Identify patterns (MVC, hexagonal, etc.)
-- `--database` - Scan schemas, migrations, models
-- `--api` - Find API endpoints and patterns
-- `--testing` - Analyze test structure and coverage
-- `--documentation` - Find and assess docs
-- `--security` - Basic security pattern scan
-- `--dependencies` - Dependency analysis
-
 **Options:**
-- `--all` - Run all analyzers (default)
-- `--auto` - Auto-import findings
-- `--review` - Interactive review mode
-- `--json` - Output as JSON
-- `--dry-run` - Preview without changes
+
+| Option | Description |
+|--------|-------------|
+| `--auto` | Auto mode - automatically accept all suggestions |
+| `--dry-run` | Show what would be imported without making changes |
+| `--only <ANALYZERS>` | Only run specific analyzers (comma-separated) |
+| `--skip <ANALYZERS>` | Skip specific analyzers (comma-separated) |
+| `--json` | Output in JSON format for Claude Code CLI integration |
+
+**Available Analyzers:**
+
+- `tech-stack` - Detect languages, frameworks, dependencies
+- `architecture` - Identify patterns (MVC, hexagonal, etc.)
+- `database` - Scan schemas, migrations, models
+- `api` - Find API endpoints and patterns
+- `testing` - Analyze test structure and coverage
+- `documentation` - Find and assess docs
+- `devops` - CI/CD, Docker, deployment configs
+- `dependencies` - Dependency analysis
 
 **Examples:**
+
 ```bash
-kodo analyze                    # All analyzers
-kodo analyze --tech-stack       # Just tech stack
-kodo analyze --auto             # Auto-import all
-kodo analyze --review           # Interactive review
+kodo analyze                          # Run all analyzers interactively
+kodo analyze --auto                   # Auto-import all findings
+kodo analyze --only tech-stack,api    # Run specific analyzers
+kodo analyze --skip testing --auto    # Skip testing analyzer
+kodo analyze --dry-run                # Preview without changes
+```
+
+---
+
+### `kodo reflect`
+
+Capture learnings from coding sessions.
+
+```bash
+kodo reflect [OPTIONS] [COMMAND]
+```
+
+**Subcommands:**
+
+| Command | Description |
+|---------|-------------|
+| `on` | Enable automatic reflection |
+| `off` | Disable automatic reflection |
+
+**Options:**
+
+| Option | Description |
+|--------|-------------|
+| `--auto` | Enable automatic reflection |
+| `--status` | Show learning statistics |
+| `--history` | Show learning history |
+| `--revert <HASH>` | Revert a specific learning by commit hash |
+| `--hook <EVENT>` | Hook event that triggered this reflection (precompact, subagent, stop, task) |
+| `--agent-id <ID>` | Agent ID for subagent-scoped learnings |
+| `-q, --quiet` | Quiet mode - minimal output for background hooks |
+| `--agent-assess` | Request agent self-assessment (outputs prompt for Claude) |
+| `--parse-agent-response [YAML]` | Parse agent's YAML response |
+| `--extract-agent-yaml` | Extract and parse agent YAML from transcript |
+| `--check-threshold` | Check threshold only (for MessageBatch/TimeInterval hooks) |
+| `--transcript <PATH>` | Path to transcript.jsonl file for hook-based reflection |
+| `--session-id <ID>` | Session ID for transcript position tracking |
+
+**Examples:**
+
+```bash
+kodo reflect                    # Interactive reflection
+kodo reflect on                 # Enable auto-reflection
+kodo reflect --status           # Show statistics
+kodo reflect --history          # Show history
+```
+
+---
+
+### `kodo curate`
+
+Add or manage context entries manually.
+
+```bash
+kodo curate [OPTIONS]
+```
+
+**Options:**
+
+| Option | Description |
+|--------|-------------|
+| `-d, --domain <DOMAIN>` | Domain for the entry |
+| `-t, --topic <TOPIC>` | Topic for the entry |
+| `--subtopic <SUBTOPIC>` | Subtopic within the topic |
+| `--title <TITLE>` | Entry title (auto-detected from # heading if not provided) |
+| `--tags <TAGS>` | Tags (comma-separated) |
+| `--confidence <LEVEL>` | Confidence level: high, medium, low |
+| `-i, --interactive` | Interactive mode |
+| `-l, --list` | List existing entries |
+| `--from <FILE>` | Create entry from file (non-interactive) |
+
+**Examples:**
+
+```bash
+kodo curate --domain auth --topic jwt "Always validate tokens server-side"
+kodo curate --from ./docs/architecture.md --domain architecture
+kodo curate --list
+kodo curate --interactive
+```
+
+---
+
+### `kodo import`
+
+Import raw markdown files into the context tree.
+
+```bash
+kodo import [OPTIONS] <PATH>
+```
+
+**Arguments:**
+
+| Argument | Description |
+|----------|-------------|
+| `<PATH>` | Source file or directory to import |
+
+**Options:**
+
+| Option | Description |
+|--------|-------------|
+| `-d, --domain <DOMAIN>` | Domain for the imported entry |
+| `-t, --topic <TOPIC>` | Topic for the imported entry |
+| `--subtopic <SUBTOPIC>` | Subtopic within the topic |
+| `--title <TITLE>` | Override title (otherwise extracted from # heading) |
+| `--tags <TAGS>` | Tags (comma-separated) |
+| `--confidence <LEVEL>` | Confidence level: high, medium, low |
+| `-r, --recursive` | Recursively import from directory |
+| `--dry-run` | Show what would be imported |
+| `--auto-detect` | Auto-detect domain from directory path |
+
+**Examples:**
+
+```bash
+kodo import ./docs/api.md --domain api
+kodo import ./docs/ --recursive --auto-detect
+kodo import ./notes.md --domain notes --tags "review,draft"
+```
+
+---
+
+### `kodo query`
+
+Search accumulated context.
+
+```bash
+kodo query [OPTIONS] [QUERY]
+```
+
+**Arguments:**
+
+| Argument | Description |
+|----------|-------------|
+| `[QUERY]` | Search query |
+
+**Options:**
+
+| Option | Description |
+|--------|-------------|
+| `-f, --format <FORMAT>` | Output format: json, markdown, plain (default: plain) |
+| `-i, --interactive` | Interactive search mode |
+| `--full` | Show full content |
+| `-l, --limit <N>` | Maximum number of results (default: 10) |
+
+**Examples:**
+
+```bash
+kodo query "authentication"
+kodo query "error handling" --format json
+kodo query --interactive
+kodo query "api" --full --limit 5
 ```
 
 ---
@@ -167,130 +275,352 @@ Show project status and statistics.
 kodo status [OPTIONS]
 ```
 
-**Options:**
-- `--json` - Output as JSON
-- `--verbose` - Include detailed stats
-
 **Shows:**
-- Context entry count by topic
-- Learning counts by confidence
-- Last sync time
+
+- Context entry count by domain/topic
+- Learning counts by confidence level
+- Sync status
 - Hook status
 
 ---
 
-### `kodo learn`
+### `kodo sync`
 
-Manage learned patterns.
+Synchronize context with Git and cloud.
 
 ```bash
-kodo learn <SUBCOMMAND>
+kodo sync [OPTIONS]
 ```
 
-**Subcommands:**
-- `list` - List learnings by confidence
-- `promote <id>` - Promote learning to higher confidence
-- `demote <id>` - Demote learning to lower confidence
-- `delete <id>` - Delete a learning
-- `export` - Export learnings as markdown
+**Options:**
+
+| Option | Description |
+|--------|-------------|
+| `-p, --push` | Push to remote after commit |
+| `--cloud-only` | Only sync to cloud (skip Git) |
+| `--git-only` | Only sync to Git (skip cloud) |
+| `--force` | Force full sync (ignore hash cache) |
+| `--migrate` | Migrate: merge nested .kodo folders into project root |
 
 **Examples:**
+
 ```bash
-kodo learn list --high          # High confidence only
-kodo learn list --pending       # Pending review
-kodo learn promote abc123       # Promote to higher confidence
-kodo learn export > learnings.md
+kodo sync                  # Sync to both Git and cloud
+kodo sync --push           # Sync and push to remote
+kodo sync --git-only       # Only sync to Git
+kodo sync --cloud-only     # Only sync to cloud
 ```
 
 ---
 
-### `kodo hooks`
+### `kodo track`
 
-Manage Claude Code integration hooks.
+Track items in GitHub Projects.
 
 ```bash
-kodo hooks <SUBCOMMAND>
+kodo track <COMMAND> [OPTIONS]
 ```
 
 **Subcommands:**
-- `install` - Install hooks to `.claude/settings.json`
-- `uninstall` - Remove hooks
-- `status` - Check hook installation status
+
+| Command | Description |
+|---------|-------------|
+| `issue` | Create a new issue |
+| `link` | Link current work to an existing issue |
+| `status` | Update issue status |
+| `list` | List issues |
+| `board` | Show project board |
+| `sync` | Sync local state with GitHub |
 
 **Examples:**
+
 ```bash
-kodo hooks install
-kodo hooks status
+kodo track issue "Fix authentication bug" --label bug
+kodo track link 123
+kodo track status 123 --done
+kodo track list --open
+kodo track board
 ```
+
+---
+
+### `kodo docs`
+
+Manage documentation in Notion.
+
+```bash
+kodo docs <COMMAND> [OPTIONS]
+```
+
+**Subcommands:**
+
+| Command | Description |
+|---------|-------------|
+| `create` | Create a new documentation page |
+| `adr` | Create an Architecture Decision Record |
+| `update` | Update existing documentation |
+| `wiki` | Sync wiki from local .kodo/ context |
+| `summary` | Generate executive summary from learnings |
+| `search` | Search documentation |
+
+**Examples:**
+
+```bash
+kodo docs create "API Design" --type wiki
+kodo docs adr "Use PostgreSQL for persistence"
+kodo docs wiki --sync
+kodo docs summary --last-week
+```
+
+---
+
+### `kodo flow`
+
+Intelligent content routing.
+
+```bash
+kodo flow [OPTIONS] [CONTENT]
+```
+
+**Arguments:**
+
+| Argument | Description |
+|----------|-------------|
+| `[CONTENT]` | Content to analyze and route |
+
+**Options:**
+
+| Option | Description |
+|--------|-------------|
+| `--dry-run` | Show routing decision without taking action |
+
+Routes content to the appropriate destination:
+- **GitHub**: Bugs, features, tasks, PRs
+- **Notion**: Architecture docs, ADRs, wikis
+- **Local (.kodo/)**: Learned patterns, code preferences
 
 ---
 
 ### `kodo plugin`
 
-Manage kodo plugins.
+Manage domain plugins.
 
 ```bash
-kodo plugin <SUBCOMMAND>
+kodo plugin <COMMAND> [OPTIONS]
 ```
 
 **Subcommands:**
-- `list` - List installed plugins
-- `list --available` - List available plugins
-- `install <name>` - Install a plugin
-- `uninstall <name>` - Uninstall a plugin
-- `update [name]` - Update plugin(s)
+
+| Command | Description |
+|---------|-------------|
+| `add` | Install a plugin |
+| `list` | List installed and available plugins |
+| `remove` | Remove an installed plugin |
 
 **Examples:**
+
 ```bash
-kodo plugin list --available
-kodo plugin install kodo-design
-kodo plugin update
+kodo plugin list                    # List installed plugins
+kodo plugin list --available        # List available plugins
+kodo plugin add design              # Install kodo-design plugin
+kodo plugin remove supabase         # Remove a plugin
+```
+
+---
+
+### `kodo context`
+
+Context management for session hooks.
+
+```bash
+kodo context <COMMAND> [OPTIONS]
+```
+
+**Subcommands:**
+
+| Command | Description |
+|---------|-------------|
+| `load` | Load context at session start |
+| `generate` | Generate .kodo/context.md with relevant learnings |
+
+---
+
+### `kodo hooks`
+
+Manage Claude Code hooks for automatic reflection.
+
+```bash
+kodo hooks <COMMAND> [OPTIONS]
+```
+
+**Subcommands:**
+
+| Command | Description |
+|---------|-------------|
+| `install` | Install Claude Code hooks for automatic reflection |
+| `uninstall` | Uninstall Claude Code hooks |
+| `status` | Check hook installation status |
+
+**Examples:**
+
+```bash
+kodo hooks install
+kodo hooks status
+kodo hooks uninstall
+```
+
+---
+
+### `kodo learn`
+
+Manage learnings (review, promote, demote).
+
+```bash
+kodo learn <COMMAND> [OPTIONS]
+```
+
+**Subcommands:**
+
+| Command | Description |
+|---------|-------------|
+| `review` | Review pending learnings interactively |
+| `promote` | Promote a learning to higher confidence |
+| `demote` | Demote a learning to lower confidence |
+| `list` | List all learnings |
+
+**Examples:**
+
+```bash
+kodo learn list                     # List all learnings
+kodo learn list --pending           # List pending review
+kodo learn review                   # Interactive review
+kodo learn promote abc123           # Promote by ID
 ```
 
 ---
 
 ### `kodo index`
 
-Manage the search index.
+Manage relevance index for context generation.
 
 ```bash
-kodo index <SUBCOMMAND>
+kodo index <COMMAND> [OPTIONS]
 ```
 
 **Subcommands:**
-- `rebuild` - Rebuild search index
-- `status` - Show index status
-- `clear` - Clear index
+
+| Command | Description |
+|---------|-------------|
+| `rebuild` | Rebuild the relevance index from learnings |
+| `status` | Show index status and statistics |
+| `embeddings` | Configure embedding providers (Pro feature) |
+
+**Examples:**
+
+```bash
+kodo index rebuild
+kodo index status
+```
 
 ---
 
-### `kodo context`
+### `kodo update`
 
-Context injection utilities.
+Manage kodo updates.
 
 ```bash
-kodo context <SUBCOMMAND>
+kodo update <COMMAND> [OPTIONS]
 ```
 
 **Subcommands:**
-- `load` - Load and output context for injection
-- `export` - Export all context as markdown
 
-**Options:**
-- `--quiet` - Minimal output
-- `--format <fmt>` - Output format
+| Command | Description |
+|---------|-------------|
+| `check` | Check for available updates |
+| `apply` | Apply pending update now |
+| `config` | Configure update settings |
+
+**Examples:**
+
+```bash
+kodo update check
+kodo update apply
+kodo update config --channel beta
+```
 
 ---
 
-## Environment Variables
+## Configuration
+
+### kodo.toml Reference
+
+The `kodo.toml` file is created in your project root by `kodo init`. Here's the complete reference:
+
+```toml
+# OpenKodo Configuration
+# 古道 - Your code path, remembered
+
+[project]
+name = "my-project"       # Project name (used in cloud sync)
+version = "0.1.0"         # Project version
+
+[learning]
+auto_reflect = true       # Enable automatic reflection
+confidence_threshold = "medium"  # Minimum confidence for auto-apply: high, medium, low
+
+[sync]
+remote = "origin"         # Git remote name
+branch = "main"           # Git branch for sync
+
+[integrations]
+github = false            # Enable GitHub integration
+notion = false            # Enable Notion integration
+
+[cloud]
+api_url = "https://app.openkodo.com/api/cli"  # Cloud API URL (can be overridden)
+sync_scope = "all"        # What to sync: all, context, learnings
+exclude = [".env", "*.tmp"]  # Patterns to exclude from cloud sync
+```
+
+### Environment Variables
 
 | Variable | Description | Default |
 |----------|-------------|---------|
-| `KODO_HOME` | Global kodo directory | `~/.kodo` |
-| `KODO_LOG_LEVEL` | Logging level | `info` |
-| `KODO_NO_COLOR` | Disable colored output | unset |
-| `GITHUB_TOKEN` | GitHub API token | unset |
-| `NOTION_TOKEN` | Notion API token | unset |
+| `ANTHROPIC_API_KEY` | Anthropic API key for Claude (agent assessment) | - |
+| `OPENAI_API_KEY` | OpenAI API key (for embeddings) | - |
+| `GITHUB_TOKEN` | GitHub personal access token | - |
+| `GITHUB_OWNER` | GitHub owner (org or username) | - |
+| `GITHUB_REPO` | GitHub default repository | - |
+| `NOTION_API_KEY` | Notion API key | - |
+| `NOTION_DATABASE_ID` | Notion default database ID | - |
+| `KODO_CLOUD_TOKEN` | Cloud sync authentication token | - |
+| `KODO_CLOUD_API_URL` | Override cloud API URL | `https://app.openkodo.com/api/cli` |
+| `KODO_MESSAGE_BATCH_THRESHOLD` | Message count before auto-reflect | `10` |
+| `KODO_INTERVAL_MINUTES` | Minutes between time-based reflections | `15` |
+| `KODO_ENABLE_EMBEDDINGS` | Enable embedding-based similarity | `false` |
+
+### Credentials File
+
+Global credentials can be stored in `~/.config/kodo/credentials.toml`:
+
+```toml
+[github]
+token = "ghp_xxxx"
+owner = "your-org"
+default_repo = "your-repo"
+
+[notion]
+api_key = "secret_xxxx"
+default_database_id = "xxxx-xxxx-xxxx"
+```
+
+**Configuration Precedence (highest to lowest):**
+1. Project `.env` (`.kodo/.env` or `./.env`)
+2. Global credentials (`~/.config/kodo/credentials.toml`)
+3. Environment variables
+4. Defaults
+
+---
 
 ## Exit Codes
 
