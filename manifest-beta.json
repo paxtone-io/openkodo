@@ -1,31 +1,31 @@
 {
-  "version": "v0.1.0-beta.10",
-  "released_at": "2026-01-25T10:58:22Z",
+  "version": "v0.1.0-beta.17",
+  "released_at": "2026-01-25T11:56:13Z",
   "is_prerelease": true,
   "platforms": {
     "darwin-x64": {
-      "url": "https://github.com/paxtone-io/openkodo/releases/download/v0.1.0-beta.10/kodo-x86_64-apple-darwin.tar.gz",
-      "sha256": "3b18a4fc4524100b4aad03da9d15339a1943ca4b28f8f7d56ef54ecc69c06ba7"
+      "url": "https://github.com/paxtone-io/openkodo/releases/download/v0.1.0-beta.17/kodo-x86_64-apple-darwin.tar.gz",
+      "sha256": "cc791ca7310c3b780dd6fd2992cecb1a7e305a60283bd649c99650d44929da04"
     },
     "darwin-arm64": {
-      "url": "https://github.com/paxtone-io/openkodo/releases/download/v0.1.0-beta.10/kodo-aarch64-apple-darwin.tar.gz",
-      "sha256": "5433f9737b809b0f2d4c62b2483c24727dd3376800fe06f8f1dae8ce517e5e51"
+      "url": "https://github.com/paxtone-io/openkodo/releases/download/v0.1.0-beta.17/kodo-aarch64-apple-darwin.tar.gz",
+      "sha256": "920042ab3084477c3ca42b359fda08aa6c1b92abf5d56cc529bee53b53c9189f"
     },
     "linux-x64": {
-      "url": "https://github.com/paxtone-io/openkodo/releases/download/v0.1.0-beta.10/kodo-x86_64-unknown-linux-gnu.tar.gz",
-      "sha256": "7a6c792300cf4f83436948f9993c551d937920ab51a562f4f72a3dbcb89da508"
+      "url": "https://github.com/paxtone-io/openkodo/releases/download/v0.1.0-beta.17/kodo-x86_64-unknown-linux-gnu.tar.gz",
+      "sha256": "2d103eab130f2ee027298c02131c6935f6be69c8eea814ae71dc4c30ec3082cb"
     },
     "linux-arm64": {
-      "url": "https://github.com/paxtone-io/openkodo/releases/download/v0.1.0-beta.10/kodo-aarch64-unknown-linux-gnu.tar.gz",
-      "sha256": "2848418dd50b87c4dbd1e50dc1b3834abbf9c5c3180230a54551d4e057726d3a"
+      "url": "https://github.com/paxtone-io/openkodo/releases/download/v0.1.0-beta.17/kodo-aarch64-unknown-linux-gnu.tar.gz",
+      "sha256": "778a7f7e6e6b935422cb076955c05fc3ea103eb74c8f3089cdec2bebad6a983c"
     },
     "windows-x64": {
-      "url": "https://github.com/paxtone-io/openkodo/releases/download/v0.1.0-beta.10/kodo-x86_64-pc-windows-msvc.zip",
-      "sha256": "6f7eb2d0170ef9e9391f728044d956e1a9aed0584d280863f247d630739141f3"
+      "url": "https://github.com/paxtone-io/openkodo/releases/download/v0.1.0-beta.17/kodo-x86_64-pc-windows-msvc.zip",
+      "sha256": "e9254799b16b33edef8eb09a903eadfe2291cbd79cdfab27a3304e956fd58baa"
     },
     "windows-arm64": {
-      "url": "https://github.com/paxtone-io/openkodo/releases/download/v0.1.0-beta.10/kodo-aarch64-pc-windows-msvc.zip",
-      "sha256": "e863ce99e56d6d138582a707d461b1f3754772e7a75cee507f09da4fb991bafc"
+      "url": "https://github.com/paxtone-io/openkodo/releases/download/v0.1.0-beta.17/kodo-aarch64-pc-windows-msvc.zip",
+      "sha256": "c47b5c4b1cfcb44978a5f3af4f9f4409abcdc42aa00fec9c15e660a295311517"
     }
   }
 }
