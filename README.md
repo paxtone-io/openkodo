@@ -32,17 +32,17 @@ Kodo plugins extend Claude Code with specialized workflows:
 
 | Plugin | Description |
 |--------|-------------|
-| [kodo-core](plugins/kodo-core/) | Core development workflows: planning, review, debugging |
+| [kodo](plugins/kodo/) | Core development workflows: planning, review, debugging, self-learning |
 | [kodo-design](plugins/kodo-design/) | UI/UX design with WCAG AAA accessibility |
 | [kodo-supabase](plugins/kodo-supabase/) | Supabase: databases, migrations, Edge Functions |
 | [kodo-posthog](plugins/kodo-posthog/) | PostHog: events, feature flags, experiments |
-| [kodo-analyzer](plugins/kodo-analyzer/) | Codebase analysis: security, performance, docs |
+| [kodo-analyzer](plugins/kodo-analyzer/) | Codebase analysis: security, performance, documentation |
 
 ### Install Plugins
 
 ```bash
 # Install individual plugins
-kodo plugin install kodo-core
+kodo plugin install kodo
 kodo plugin install kodo-design
 
 # List available plugins
@@ -57,10 +57,8 @@ kodo plugin list
 For Claude Code users who only want the plugins without the full CLI:
 
 ```bash
-# Clone plugins directly to Claude Code plugins directory
-git clone --depth 1 --filter=blob:none --sparse https://github.com/paxtone-io/openkodo.git ~/.claude/plugins/kodo
-cd ~/.claude/plugins/kodo
-git sparse-checkout set plugins/kodo-core plugins/kodo-design
+# Or use Claude Code's native plugin install
+# In Claude Code, type /plugin → Add Marketplace → paxtone-io/openkodo
 ```
 
 ## Usage
@@ -84,9 +82,9 @@ kodo analyze --tech-stack --architecture
 
 ## Documentation
 
-- [Getting Started](https://github.com/paxtone-io/openkodo/wiki/Getting-Started)
-- [Plugin Development](https://github.com/paxtone-io/openkodo/wiki/Plugin-Development)
-- [CLI Reference](https://github.com/paxtone-io/openkodo/wiki/CLI-Reference)
+- [Getting Started](docs/GETTING-STARTED.md) - Installation and first steps
+- [CLI Reference](docs/CLI-REFERENCE.md) - Full command documentation
+- [Plugin Development](docs/PLUGIN-DEVELOPMENT.md) - Create custom plugins
 
 ## License
 
