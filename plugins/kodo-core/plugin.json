@@ -1,15 +1,20 @@
 {
   "id": "kodo-core",
   "name": "Kodo Core",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Core development workflows for OpenKodo - feature planning, code review, debugging, and more",
   "author": "Paxtone.io",
   "license": "MIT",
   "homepage": "https://github.com/paxtone-io/openkodo",
   "repository": "https://github.com/paxtone-io/openkodo",
-  "min_cli_version": "0.1.0",
+  "min_cli_version": "0.1.1",
   "category": "development",
-  "tags": ["planning", "review", "debugging", "feature-dev"],
+  "tags": [
+    "planning",
+    "review",
+    "debugging",
+    "feature-dev"
+  ],
   "agents": [
     {
       "name": "kodo-architect",

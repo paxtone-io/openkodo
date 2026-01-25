@@ -1,55 +1,79 @@
 {
-  "version": "1.0.0",
-  "updated_at": "2026-01-25T12:00:00Z",
+  "version": "0.1.1",
+  "updated_at": "2026-01-25T12:57:28Z",
   "plugins": [
     {
       "id": "kodo-core",
       "name": "Kodo Core",
       "description": "Core development workflows: feature planning, code review, and debugging",
-      "version": "0.1.0",
-      "min_cli_version": "0.1.0",
+      "version": "0.1.1",
+      "min_cli_version": "0.1.1",
       "category": "development",
-      "tags": ["planning", "review", "debugging"],
+      "tags": [
+        "planning",
+        "review",
+        "debugging"
+      ],
       "manifest_url": "https://raw.githubusercontent.com/paxtone-io/openkodo/main/plugins/kodo-core/plugin.json"
     },
     {
       "id": "kodo-design",
       "name": "Kodo Design",
       "description": "UI/UX design workflows with WCAG AAA accessibility compliance",
-      "version": "0.1.0",
-      "min_cli_version": "0.1.0",
+      "version": "0.1.1",
+      "min_cli_version": "0.1.1",
       "category": "design",
-      "tags": ["ui", "ux", "accessibility", "wcag"],
+      "tags": [
+        "ui",
+        "ux",
+        "accessibility",
+        "wcag"
+      ],
       "manifest_url": "https://raw.githubusercontent.com/paxtone-io/openkodo/main/plugins/kodo-design/plugin.json"
     },
     {
       "id": "kodo-supabase",
       "name": "Kodo Supabase",
       "description": "Supabase integration: database schemas, migrations, Edge Functions",
-      "version": "0.1.0",
-      "min_cli_version": "0.1.0",
+      "version": "0.1.1",
+      "min_cli_version": "0.1.1",
       "category": "backend",
-      "tags": ["supabase", "database", "postgres", "edge-functions"],
+      "tags": [
+        "supabase",
+        "database",
+        "postgres",
+        "edge-functions"
+      ],
       "manifest_url": "https://raw.githubusercontent.com/paxtone-io/openkodo/main/plugins/kodo-supabase/plugin.json"
     },
     {
       "id": "kodo-posthog",
       "name": "Kodo PostHog",
       "description": "PostHog analytics: events, feature flags, experiments",
-      "version": "0.1.0",
-      "min_cli_version": "0.1.0",
+      "version": "0.1.1",
+      "min_cli_version": "0.1.1",
       "category": "analytics",
-      "tags": ["posthog", "analytics", "feature-flags", "experiments"],
+      "tags": [
+        "posthog",
+        "analytics",
+        "feature-flags",
+        "experiments"
+      ],
       "manifest_url": "https://raw.githubusercontent.com/paxtone-io/openkodo/main/plugins/kodo-posthog/plugin.json"
     },
     {
       "id": "kodo-analyzer",
       "name": "Kodo Analyzer",
       "description": "Codebase analysis: security, performance, documentation gaps",
-      "version": "0.1.0",
-      "min_cli_version": "0.1.0",
+      "version": "0.1.1",
+      "min_cli_version": "0.1.1",
       "category": "analysis",
-      "tags": ["security", "performance", "documentation", "audit"],
+      "tags": [
+        "security",
+        "performance",
+        "documentation",
+        "audit"
+      ],
       "manifest_url": "https://raw.githubusercontent.com/paxtone-io/openkodo/main/plugins/kodo-analyzer/plugin.json"
     }
   ]

@@ -1,15 +1,21 @@
 {
   "id": "kodo-posthog",
   "name": "Kodo PostHog",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "PostHog analytics integration for events, feature flags, experiments, and dashboards",
   "author": "Paxtone.io",
   "license": "MIT",
   "homepage": "https://github.com/paxtone-io/openkodo",
   "repository": "https://github.com/paxtone-io/openkodo",
-  "min_cli_version": "0.1.0",
+  "min_cli_version": "0.1.1",
   "category": "analytics",
-  "tags": ["posthog", "analytics", "feature-flags", "experiments", "a/b-testing"],
+  "tags": [
+    "posthog",
+    "analytics",
+    "feature-flags",
+    "experiments",
+    "a/b-testing"
+  ],
   "agents": [
     {
       "name": "kodo-ph-analyst",

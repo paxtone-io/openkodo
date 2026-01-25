@@ -1,15 +1,21 @@
 {
   "id": "kodo-analyzer",
   "name": "Kodo Analyzer",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Comprehensive codebase analysis for security, performance, documentation, and health assessment",
   "author": "Paxtone.io",
   "license": "MIT",
   "homepage": "https://github.com/paxtone-io/openkodo",
   "repository": "https://github.com/paxtone-io/openkodo",
-  "min_cli_version": "0.1.0",
+  "min_cli_version": "0.1.1",
   "category": "analysis",
-  "tags": ["security", "performance", "documentation", "audit", "health-check"],
+  "tags": [
+    "security",
+    "performance",
+    "documentation",
+    "audit",
+    "health-check"
+  ],
   "agents": [
     {
       "name": "kodo-codebase-analyzer",
