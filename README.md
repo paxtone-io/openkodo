@@ -88,4 +88,9 @@ kodo analyze --tech-stack --architecture
 
 ## License
 
-MIT License - see [LICENSE](LICENSE) for details.
+This project adopts a dual licensing model:
+
+- The **plugins** (components within the `plugins/` directory) are open-source and licensed under the [MIT License](LICENSE.md).
+- The **OpenKodo CLI** and other parts of this repository are proprietary software. While the CLI is free to use, its source code is not open for modification, redistribution, or any other use outside the terms provided.
+
+By using this software, you agree to the terms for the OpenKodo CLI. Please refer to the [End User License Agreement](EULA.md) for details about proprietary usage.
