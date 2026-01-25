@@ -1,0 +1,13 @@
+{
+  "name": "kodo-posthog",
+  "version": "0.1.1",
+  "description": "PostHog analytics: events, feature flags, experiments",
+  "author": {
+    "name": "Mack Górski",
+    "email": "mack@openkodo.dev"
+  },
+  "homepage": "https://openkodo.dev",
+  "repository": "https://github.com/paxtone-io/openkodo",
+  "license": "MIT",
+  "keywords": ["posthog", "analytics", "feature-flags", "experiments", "a-b-testing"]
+}

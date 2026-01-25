@@ -1,46 +1,42 @@
 {
-  "id": "kodo-design",
-  "name": "Kodo Design",
+  "name": "kodo-design",
   "version": "0.1.1",
-  "description": "UI/UX design workflows with Design Bible principles and WCAG AAA accessibility compliance",
-  "author": "Paxtone.io",
-  "license": "MIT",
-  "homepage": "https://github.com/paxtone-io/openkodo",
-  "repository": "https://github.com/paxtone-io/openkodo",
-  "min_cli_version": "0.1.1",
-  "category": "design",
-  "tags": [
-    "ui",
-    "ux",
-    "accessibility",
-    "wcag",
-    "design-system"
-  ],
+  "description": "Frontend design with Design Bible principles for premium, accessible UI",
   "agents": [
     {
       "name": "kodo-design-agent",
-      "description": "UI component design with Design Bible principles",
-      "model": "opus"
+      "path": "agents/kodo-design-agent.md"
     },
     {
       "name": "kodo-a11y-auditor",
-      "description": "Accessibility audits for WCAG AAA compliance",
-      "model": "sonnet"
-    },
-    {
-      "name": "kodo-design-researcher",
-      "description": "Design inspiration research from Dribbble, Behance, 21st.dev",
-      "model": "haiku"
+      "path": "agents/kodo-a11y-auditor.md"
     }
   ],
   "skills": [
-    "pxt-design",
-    "pxt-design-audit",
-    "pxt-design-system"
-  ],
-  "install": {
-    "type": "git",
-    "url": "https://github.com/paxtone-io/openkodo.git",
-    "path": "plugins/kodo-design"
-  }
+    {
+      "name": "design",
+      "command": "/kodo design",
+      "description": "Design a specific UI component or page with Design Bible principles"
+    },
+    {
+      "name": "design-system",
+      "command": "/kodo design-system",
+      "description": "Create or update project design foundation in docs/rules/design-system.md"
+    },
+    {
+      "name": "design-audit",
+      "command": "/kodo design-audit",
+      "description": "Audit existing UI for consistency, accessibility, and UX issues"
+    },
+    {
+      "name": "design-theme",
+      "command": "/kodo design-theme",
+      "description": "Audit a color theme for WCAG 2.2 AA/AAA accessibility compliance"
+    },
+    {
+      "name": "design-inspire",
+      "command": "/kodo design-inspire",
+      "description": "Research design inspiration from Dribbble, Behance, 21st.dev"
+    }
+  ]
 }

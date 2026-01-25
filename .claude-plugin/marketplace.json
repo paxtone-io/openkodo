@@ -1,7 +1,6 @@
 {
-  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "openkodo",
-  "version": "1.0.0",
+  "version": "0.1.1",
   "description": "OpenKodo - Context management CLI and self-learning system for AI coding tools",
   "owner": {
     "name": "Mack Górski",
@@ -10,9 +9,33 @@
   "plugins": [
     {
       "name": "kodo",
-      "source": "./kodo",
-      "description": "Kodo CLI integration for Claude Code - universal process skills and self-learning",
+      "source": "./plugins/kodo",
+      "description": "Core development workflows: planning, review, debugging, and self-learning",
       "category": "productivity"
+    },
+    {
+      "name": "kodo-design",
+      "source": "./plugins/kodo-design",
+      "description": "UI/UX design workflows with WCAG AAA accessibility compliance",
+      "category": "design"
+    },
+    {
+      "name": "kodo-analyzer",
+      "source": "./plugins/kodo-analyzer",
+      "description": "Codebase analysis: security, performance, documentation gaps",
+      "category": "analysis"
+    },
+    {
+      "name": "kodo-supabase",
+      "source": "./plugins/kodo-supabase",
+      "description": "Supabase integration: databases, migrations, Edge Functions",
+      "category": "backend"
+    },
+    {
+      "name": "kodo-posthog",
+      "source": "./plugins/kodo-posthog",
+      "description": "PostHog analytics: events, feature flags, experiments",
+      "category": "analytics"
     }
   ]
 }

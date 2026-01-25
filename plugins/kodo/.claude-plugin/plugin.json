@@ -1,13 +1,13 @@
 {
   "name": "kodo",
-  "version": "1.0.0",
-  "description": "Kodo CLI integration for Claude Code - universal process skills and self-learning",
+  "version": "0.1.1",
+  "description": "Core development workflows: planning, review, debugging, and self-learning",
   "author": {
     "name": "Mack Górski",
     "email": "mack@openkodo.dev"
   },
   "homepage": "https://openkodo.dev",
-  "repository": "https://github.com/openkodo/openkodo",
+  "repository": "https://github.com/paxtone-io/openkodo",
   "license": "MIT",
   "keywords": ["context", "learning", "workflow", "brainstorm", "planning", "review", "debugging"]
 }

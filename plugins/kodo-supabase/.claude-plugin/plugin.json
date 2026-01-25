@@ -1,0 +1,13 @@
+{
+  "name": "kodo-supabase",
+  "version": "0.1.1",
+  "description": "Supabase integration: databases, migrations, Edge Functions",
+  "author": {
+    "name": "Mack Górski",
+    "email": "mack@openkodo.dev"
+  },
+  "homepage": "https://openkodo.dev",
+  "repository": "https://github.com/paxtone-io/openkodo",
+  "license": "MIT",
+  "keywords": ["supabase", "database", "postgres", "edge-functions", "auth"]
+}

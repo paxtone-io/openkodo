@@ -1,47 +1,97 @@
 {
-  "id": "kodo-posthog",
-  "name": "Kodo PostHog",
+  "name": "kodo-posthog",
   "version": "0.1.1",
-  "description": "PostHog analytics integration for events, feature flags, experiments, and dashboards",
-  "author": "Paxtone.io",
-  "license": "MIT",
-  "homepage": "https://github.com/paxtone-io/openkodo",
-  "repository": "https://github.com/paxtone-io/openkodo",
-  "min_cli_version": "0.1.1",
-  "category": "analytics",
-  "tags": [
-    "posthog",
-    "analytics",
-    "feature-flags",
-    "experiments",
-    "a/b-testing"
+  "description": "PostHog analytics for feature flags, experiments, and product insights",
+  "skills": [
+    {
+      "name": "posthog",
+      "path": "skills/posthog/SKILL.md",
+      "command": "/kodo posthog",
+      "description": "PostHog analytics, feature flags, and A/B experiments"
+    }
   ],
   "agents": [
     {
       "name": "kodo-ph-analyst",
-      "description": "PostHog analytics analysis and event coverage",
+      "path": "agents/kodo-ph-analyst.md",
+      "description": "Analyze PostHog data to surface actionable product insights",
       "model": "sonnet"
     },
     {
       "name": "kodo-ph-experiment-agent",
-      "description": "A/B test and experiment design and analysis",
+      "path": "agents/kodo-ph-experiment-agent.md",
+      "description": "Design, implement, and analyze A/B experiments with statistical rigor",
       "model": "sonnet"
     },
     {
       "name": "kodo-ph-sync-agent",
-      "description": "PostHog-Notion documentation sync",
+      "path": "agents/kodo-ph-sync-agent.md",
+      "description": "Keep PostHog configuration and Notion documentation synchronized",
       "model": "haiku"
     }
   ],
-  "skills": [
-    "pxt-ph-event",
-    "pxt-ph-flag",
-    "pxt-ph-experiment",
-    "pxt-ph-dashboard"
+  "commands": [
+    {
+      "name": "kodo-ph-event",
+      "path": "commands/kodo-ph-event.md",
+      "command": "/kodo ph-event",
+      "description": "Track custom events and manage event documentation for PostHog analytics"
+    },
+    {
+      "name": "kodo-ph-flag",
+      "path": "commands/kodo-ph-flag.md",
+      "command": "/kodo ph-flag",
+      "description": "Create, update, and manage PostHog feature flags with proper naming and targeting"
+    },
+    {
+      "name": "kodo-ph-experiment",
+      "path": "commands/kodo-ph-experiment.md",
+      "command": "/kodo ph-experiment",
+      "description": "Create, monitor, and analyze PostHog experiments with proper hypothesis documentation"
+    },
+    {
+      "name": "kodo-ph-dashboard",
+      "path": "commands/kodo-ph-dashboard.md",
+      "command": "/kodo ph-dashboard",
+      "description": "Create, manage, and organize PostHog dashboards and insights for product analytics"
+    },
+    {
+      "name": "kodo-ph-sync",
+      "path": "commands/kodo-ph-sync.md",
+      "command": "/kodo ph-sync",
+      "description": "Synchronize PostHog analytics configuration with Notion documentation"
+    }
   ],
-  "install": {
-    "type": "git",
-    "url": "https://github.com/paxtone-io/openkodo.git",
-    "path": "plugins/kodo-posthog"
-  }
+  "references": [
+    {
+      "name": "events",
+      "path": "skills/posthog/references/events.md",
+      "description": "Event tracking patterns, naming conventions, and property schemas"
+    },
+    {
+      "name": "feature-flags",
+      "path": "skills/posthog/references/feature-flags.md",
+      "description": "Feature flag patterns, targeting rules, and lifecycle management"
+    },
+    {
+      "name": "experiments",
+      "path": "skills/posthog/references/experiments.md",
+      "description": "A/B testing methodology, metric design, and statistical analysis"
+    },
+    {
+      "name": "dashboards",
+      "path": "skills/posthog/references/dashboards.md",
+      "description": "Dashboard design, insight types, and visualization patterns"
+    },
+    {
+      "name": "session-recording",
+      "path": "skills/posthog/references/session-recording.md",
+      "description": "Session recording configuration, privacy settings, and data masking"
+    },
+    {
+      "name": "notion-sync",
+      "path": "skills/posthog/references/notion-sync.md",
+      "description": "PostHog-Notion sync patterns and documentation automation"
+    }
+  ]
 }
