@@ -1,0 +1,75 @@
+{
+  "$comment": [
+    "OpenKodo Reflection Hooks",
+    "",
+    "Threshold-based hooks (MessageBatch, TimeInterval):",
+    "  - MessageBatch: triggers after N user messages (default: 10)",
+    "  - TimeInterval: triggers after M minutes since last reflect (default: 15)",
+    "",
+    "Configure thresholds via env vars or .kodo/.env:",
+    "  KODO_MESSAGE_BATCH_THRESHOLD=10",
+    "  KODO_INTERVAL_MINUTES=15",
+    "",
+    "Agent Assessment - Two Approaches:",
+    "",
+    "1. IN-SESSION FLOW (no API key needed):",
+    "   The active Claude Code session can self-assess learnings:",
+    "   Step 1: kodo reflect --agent-assess  (outputs prompt for Claude)",
+    "   Step 2: kodo reflect --parse-agent-response '<yaml>'",
+    "           (parses Claude's YAML response and stores learnings)",
+    "   Score ceiling: 0.7 (agent-only)",
+    "",
+    "2. API-BASED FLOW (with ANTHROPIC_API_KEY):",
+    "   When API key is set, hooks automatically call Claude for dual-scoring.",
+    "   Regex detection caps at 0.6, agent at 0.7.",
+    "   Agreement bonus can boost combined score to 1.0."
+  ],
+
+  "PreCompact": [
+    {
+      "command": "kodo reflect --hook precompact --quiet",
+      "timeout": 30000
+    }
+  ],
+
+  "SubagentStop": [
+    {
+      "command": "kodo reflect --hook subagent --quiet",
+      "timeout": 30000
+    }
+  ],
+
+  "Stop": [
+    {
+      "command": "kodo reflect --hook stop",
+      "timeout": 60000
+    }
+  ],
+
+  "PostToolUse": [
+    {
+      "command": "kodo reflect --hook task --quiet",
+      "timeout": 15000,
+      "matcher": {
+        "tool_name": "TodoWrite",
+        "pattern": "\"status\":\\s*\"completed\""
+      }
+    }
+  ],
+
+  "UserPromptSubmit": [
+    {
+      "command": "kodo reflect --hook messagebatch --quiet --check-threshold",
+      "timeout": 5000,
+      "$comment": "Checks message batch threshold (N messages)"
+    }
+  ],
+
+  "SessionStart": [
+    {
+      "command": "kodo reflect --hook timeinterval --quiet --check-threshold",
+      "timeout": 5000,
+      "$comment": "Checks time interval threshold (M minutes since last reflect)"
+    }
+  ]
+}
