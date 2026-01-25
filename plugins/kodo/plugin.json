@@ -1,6 +1,6 @@
 {
   "name": "kodo",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Kodo CLI integration for Claude Code - universal process skills and self-learning",
   "hooks": {
     "SessionStart": [
