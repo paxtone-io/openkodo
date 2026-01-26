@@ -109,6 +109,36 @@ kodo reflect on
 
 This enables kodo to capture patterns and insights from your coding sessions.
 
+### Set Up Integrations (Optional)
+
+To use GitHub and Notion integrations, create a `.env` file:
+
+```bash
+# Create .env in project root or .kodo/.env
+cp .env.example .env
+# Edit .env with your API credentials
+```
+
+Check your authentication status:
+
+```bash
+kodo auth status
+```
+
+Verify credentials work by testing API connections:
+
+```bash
+kodo auth verify
+```
+
+For detailed setup instructions:
+
+```bash
+kodo auth setup
+```
+
+See [CLI Reference - kodo auth](CLI-REFERENCE.md#kodo-auth) for full documentation.
+
 ---
 
 ## Project Structure

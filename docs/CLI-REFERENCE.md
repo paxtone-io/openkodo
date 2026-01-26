@@ -23,6 +23,7 @@ Complete command reference for the `kodo` CLI.
   - [kodo learn](#kodo-learn)
   - [kodo index](#kodo-index)
   - [kodo update](#kodo-update)
+  - [kodo auth](#kodo-auth)
 - [Configuration](#configuration)
   - [kodo.toml Reference](#kodotoml-reference)
   - [Environment Variables](#environment-variables)
@@ -605,6 +606,95 @@ kodo update config --channel beta
 
 ---
 
+### `kodo auth`
+
+Manage authentication for integrations.
+
+```bash
+kodo auth <COMMAND>
+```
+
+**Subcommands:**
+
+| Command | Description |
+|---------|-------------|
+| `status` | Show authentication status for all integrations |
+| `verify` | Verify credentials by testing API connections |
+| `setup` | Show setup instructions for credentials |
+
+#### `kodo auth status`
+
+Show which credentials are configured:
+
+```bash
+kodo auth status
+```
+
+**Output:**
+
+```
+Authentication Status
+
+GitHub:
+  ✓ GITHUB_TOKEN: configured
+  ✓ GITHUB_OWNER: configured
+  ○ GITHUB_REPO: not set (optional)
+
+Notion:
+  ✗ NOTION_API_KEY: not configured
+  ○ NOTION_DATABASE_ID: not set (optional)
+
+Anthropic:
+  ✓ ANTHROPIC_API_KEY: configured
+
+OpenAI:
+  ○ OPENAI_API_KEY: not set (optional)
+
+Tip: Add missing credentials to .env or .kodo/.env
+   See: kodo auth setup
+```
+
+#### `kodo auth verify`
+
+Test credentials by making API calls:
+
+```bash
+kodo auth verify
+```
+
+**Output:**
+
+```
+Verifying credentials...
+
+GitHub:
+  → Testing API access... ✓ authenticated as @username
+
+Notion:
+  ○ credentials not configured - skipped
+
+Anthropic:
+  → Testing API access... ✓ API key valid
+
+OpenAI:
+  → Testing API access... ✓ API key valid
+```
+
+#### `kodo auth setup`
+
+Show setup instructions for credentials:
+
+```bash
+kodo auth setup
+```
+
+Displays:
+- Required environment variables for each integration
+- Links to obtain API tokens
+- Instructions for finding Notion database IDs from URLs
+
+---
+
 ## Configuration
 
 ### kodo.toml Reference
@@ -684,26 +774,46 @@ exclude = [".env", "*.tmp"]  # Patterns to exclude from cloud sync
 | `KODO_INTERVAL_MINUTES` | Minutes between time-based reflections | `15` |
 | `KODO_ENABLE_EMBEDDINGS` | Enable embedding-based similarity | `false` |
 
-### Credentials File
+### Credentials Setup
 
-Global credentials can be stored in `~/.config/kodo/credentials.toml`:
+Credentials are stored in `.env` files. Create a `.env` file in your project root or `.kodo/.env`:
 
-```toml
-[github]
-token = "ghp_xxxx"
-owner = "your-org"
-default_repo = "your-repo"
+```bash
+# .env or .kodo/.env
+# NEVER commit this file to git!
 
-[notion]
-api_key = "secret_xxxx"
-default_database_id = "xxxx-xxxx-xxxx"
+# GitHub Integration (for kodo track)
+GITHUB_TOKEN=ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+GITHUB_OWNER=your-org-or-username
+GITHUB_REPO=your-repo  # optional
+
+# Notion Integration (for kodo docs)
+NOTION_API_KEY=secret_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+# To find database ID from URL: https://www.notion.so/2f48f7779a358...?v=...
+#                                         ^^^^^^^^^^^^^^^^^^^^^^^^
+NOTION_DATABASE_ID=2f48f7779a3580228070f4e903621655
+
+# Anthropic API (for kodo reflect --assess)
+ANTHROPIC_API_KEY=sk-ant-api03-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+# OpenAI API (optional, for embeddings)
+OPENAI_API_KEY=sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+Check and verify your credentials:
+
+```bash
+kodo auth status   # Show which credentials are configured
+kodo auth verify   # Test credentials by calling APIs
+kodo auth setup    # Show detailed setup instructions
 ```
 
 **Configuration Precedence (highest to lowest):**
-1. Project `.env` (`.kodo/.env` or `./.env`)
-2. Global credentials (`~/.config/kodo/credentials.toml`)
-3. Environment variables
-4. Defaults
+1. Project `.env` (`.kodo/.env` takes precedence over `./.env`)
+2. Environment variables
+3. Defaults
+
+> **Note:** The `credentials.toml` file is deprecated. If you have an existing `~/.config/kodo/credentials.toml`, migrate your credentials to `.env` files and delete the old file.
 
 ---
 
