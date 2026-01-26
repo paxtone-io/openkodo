@@ -1,6 +1,6 @@
 {
   "name": "kodo",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Kodo CLI integration for Claude Code - universal process skills and self-learning",
   "hooks": {
     "SessionStart": [
@@ -34,27 +34,27 @@
   "skills": [
     {
       "name": "brainstorm",
-      "command": "/kodo:brainstorm",
+      "command": "/kodo brainstorm",
       "description": "Turn ideas into fully formed designs through collaborative questioning"
     },
     {
       "name": "plan",
-      "command": "/kodo:plan",
+      "command": "/kodo plan",
       "description": "Create implementation plans with TDD approach"
     },
     {
       "name": "execute",
-      "command": "/kodo:execute",
+      "command": "/kodo execute",
       "description": "Execute implementation plans with checkpoints"
     },
     {
       "name": "review",
-      "command": "/kodo:review",
+      "command": "/kodo review",
       "description": "Code review with confidence-based filtering"
     },
     {
       "name": "debug",
-      "command": "/kodo:debug",
+      "command": "/kodo debug",
       "description": "Systematic debugging workflow"
     }
   ],

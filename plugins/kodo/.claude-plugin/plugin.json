@@ -1,79 +1,13 @@
 {
   "name": "kodo",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Kodo CLI integration for Claude Code - universal process skills and self-learning",
-  "hooks": {
-    "SessionStart": [
-      {
-        "type": "command",
-        "command": "kodo context load --quiet",
-        "description": "Load recent context and active learnings"
-      }
-    ],
-    "PreCompact": [
-      {
-        "type": "command",
-        "command": "kodo reflect --hook precompact --quiet",
-        "description": "Auto-capture learnings before context compaction"
-      }
-    ],
-    "Stop": [
-      {
-        "type": "command",
-        "command": "kodo reflect --hook stop --quiet",
-        "description": "Auto-capture learnings when Claude stops responding"
-      }
-    ],
-    "SessionEnd": [
-      {
-        "type": "prompt",
-        "prompt": "Session ending. Consider running `kodo reflect` to capture any learnings from this session."
-      }
-    ]
+  "author": {
+    "name": "Mack Górski",
+    "email": "mack@openkodo.dev"
   },
-  "skills": [
-    {
-      "name": "brainstorm",
-      "command": "/kodo:brainstorm",
-      "description": "Turn ideas into fully formed designs through collaborative questioning"
-    },
-    {
-      "name": "plan",
-      "command": "/kodo:plan",
-      "description": "Create implementation plans with TDD approach"
-    },
-    {
-      "name": "execute",
-      "command": "/kodo:execute",
-      "description": "Execute implementation plans with checkpoints"
-    },
-    {
-      "name": "review",
-      "command": "/kodo:review",
-      "description": "Code review with confidence-based filtering"
-    },
-    {
-      "name": "debug",
-      "command": "/kodo:debug",
-      "description": "Systematic debugging workflow"
-    }
-  ],
-  "agents": [
-    {
-      "name": "kodo-explorer",
-      "file": "agents/kodo-explorer.md"
-    },
-    {
-      "name": "kodo-architect",
-      "file": "agents/kodo-architect.md"
-    },
-    {
-      "name": "kodo-feature",
-      "file": "agents/kodo-feature.md"
-    },
-    {
-      "name": "kodo-reviewer",
-      "file": "agents/kodo-reviewer.md"
-    }
-  ]
+  "homepage": "https://openkodo.dev",
+  "repository": "https://github.com/openkodo/openkodo",
+  "license": "MIT",
+  "keywords": ["context", "learning", "workflow", "brainstorm", "planning", "review", "debugging"]
 }

@@ -1,6 +1,6 @@
 {
   "name": "kodo-supabase",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Supabase integration for database, auth, edge functions, and hybrid ORM workflows across TypeScript, Python, and Rust",
   "author": "OpenKodo",
   "repository": "https://github.com/openkodo/kodo",
@@ -36,43 +36,43 @@
   "commands": [
     {
       "name": "kodo-supa-db",
-      "command": "/kodo-supabase:kodo-supa-db",
+      "command": "/kodo supa-db",
       "description": "Manage database operations with intelligent ORM detection",
       "file": "commands/kodo-supa-db.md"
     },
     {
       "name": "kodo-supa-decide",
-      "command": "/kodo-supabase:kodo-supa-decide",
+      "command": "/kodo supa-decide",
       "description": "Get architecture recommendation for implementing a feature",
       "file": "commands/kodo-supa-decide.md"
     },
     {
       "name": "kodo-supa-deploy",
-      "command": "/kodo-supabase:kodo-supa-deploy",
+      "command": "/kodo supa-deploy",
       "description": "Deploy Edge Functions and database changes to production",
       "file": "commands/kodo-supa-deploy.md"
     },
     {
       "name": "kodo-supa-edge",
-      "command": "/kodo-supabase:kodo-supa-edge",
+      "command": "/kodo supa-edge",
       "description": "Create and manage Supabase Edge Functions",
       "file": "commands/kodo-supa-edge.md"
     },
     {
       "name": "kodo-supa-migrate",
-      "command": "/kodo-supabase:kodo-supa-migrate",
+      "command": "/kodo supa-migrate",
       "description": "Manage database migrations with ORM detection for hybrid workflows",
       "file": "commands/kodo-supa-migrate.md"
     },
     {
       "name": "kodo-supa-schema",
-      "command": "/kodo-supabase:kodo-supa-schema",
+      "command": "/kodo supa-schema",
       "description": "Manage database schema using native ORM in a hybrid Supabase setup",
       "file": "commands/kodo-supa-schema.md"
     },
     {
       "name": "kodo-supa-status",
-      "command": "/kodo-supabase:kodo-supa-status",
+      "command": "/kodo supa-status",
       "description": "Check Supabase project status and health",
       "file": "commands/kodo-supa-status.md"
     }
@@ -80,7 +80,7 @@
   "skills": [
     {
       "name": "supabase",
-      "command": "/kodo-supabase:supabase",
+      "command": "/kodo supabase",
       "description": "Architecture decision guide for multi-language applications using Supabase",
       "file": "skills/supabase/SKILL.md",
       "references": [
