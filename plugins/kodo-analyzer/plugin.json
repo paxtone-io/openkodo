@@ -1,6 +1,6 @@
 {
   "name": "kodo-analyzer",
-  "version": "0.1.5",
+  "version": "0.1.7",
   "description": "Comprehensive codebase analysis for health checks, gap detection, security audits, and recommendations",
   "agents": [
     {
@@ -69,8 +69,14 @@
     {
       "name": "analyzer",
       "file": "skills/analyzer/SKILL.md",
-      "command": "/kodo analyze",
+      "command": "/kodo-analyzer:analyzer",
       "description": "Comprehensive codebase analysis and health scoring methodology"
+    },
+    {
+      "name": "deep-analyze",
+      "file": "skills/deep-analyze/SKILL.md",
+      "command": "/kodo-analyzer:deep-analyze",
+      "description": "Deep analysis: extract full content and learnings from documentation"
     }
   ],
   "references": [

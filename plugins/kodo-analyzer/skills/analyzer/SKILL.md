@@ -163,8 +163,17 @@ See `references/issue-categories.md` for severity definitions.
 
 ### Step 1: Initialize
 ```bash
-kodo analyze
+kodo analyze              # Standard analysis
+kodo analyze --deep       # Deep mode: extract full content + learnings from docs/
+kodo analyze --deep --auto  # Auto-accept all findings
 ```
+
+**Deep Mode** (`--deep`): In addition to standard analysis, extracts learnings from documentation:
+- Scans `docs/` directory recursively
+- Extracts rules, decisions, tech-stack choices, workflows, domain terms, conventions
+- Creates context entries in `.kodo/context-tree/`
+- Creates learnings in `.kodo/learnings/` (grouped by category)
+- Assigns HIGH confidence to your design docs (`docs/plans/`), MEDIUM to inherited docs
 
 ### Step 2: Review Summary
 Check overall health score and critical issues.
@@ -260,6 +269,8 @@ Set analysis preferences in `.kodo/config.json`:
 ## Related Commands
 
 - `/kodo analyze` - Run analysis
+- `/kodo analyze --deep` - Run analysis with full content extraction + learnings
+- `/kodo extract <file>` - Extract learnings from a single file
 - `/kodo curate` - Store analysis in context
 - `/kodo query` - Search previous analyses
 - `/kodo reflect` - Capture learnings from analysis

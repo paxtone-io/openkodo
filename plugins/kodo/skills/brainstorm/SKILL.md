@@ -85,7 +85,15 @@ Which direction feels right?
 **After design is validated:**
 1. Write to `docs/plans/YYYY-MM-DD-<topic>-design.md`
 2. Commit the design document
-3. Capture key decisions: `kodo reflect --signal "Decided to use X because Y"`
+3. **Auto-extract learnings from the design doc:**
+   ```bash
+   kodo extract docs/plans/YYYY-MM-DD-<topic>-design.md
+   ```
+   This will:
+   - Parse the design doc for learnings (rules, decisions, tech choices, workflows)
+   - Add them to `.kodo/learnings/` with HIGH confidence (user-created design)
+   - Create a context entry in `.kodo/context-tree/`
+4. Capture any additional key decisions: `kodo reflect --signal "Decided to use X because Y"`
 
 ## Handoff to Implementation
 

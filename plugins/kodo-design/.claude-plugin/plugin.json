@@ -1,13 +1,42 @@
 {
   "name": "kodo-design",
-  "version": "0.1.5",
-  "description": "UI/UX design workflows with WCAG AAA accessibility compliance",
-  "author": {
-    "name": "Mack Górski",
-    "email": "mack@openkodo.dev"
-  },
-  "homepage": "https://openkodo.dev",
-  "repository": "https://github.com/paxtone-io/openkodo",
-  "license": "MIT",
-  "keywords": ["design", "ui", "ux", "accessibility", "wcag", "a11y"]
+  "version": "0.1.7",
+  "description": "Frontend design with Design Bible principles for premium, accessible UI",
+  "agents": [
+    {
+      "name": "kodo-design-agent",
+      "path": "agents/kodo-design-agent.md"
+    },
+    {
+      "name": "kodo-a11y-auditor",
+      "path": "agents/kodo-a11y-auditor.md"
+    }
+  ],
+  "skills": [
+    {
+      "name": "design",
+      "command": "/kodo-design:design",
+      "description": "Design a specific UI component or page with Design Bible principles"
+    },
+    {
+      "name": "design-system",
+      "command": "/kodo-design:design-system",
+      "description": "Create or update project design foundation in docs/rules/design-system.md"
+    },
+    {
+      "name": "design-audit",
+      "command": "/kodo-design:design-audit",
+      "description": "Audit existing UI for consistency, accessibility, and UX issues"
+    },
+    {
+      "name": "design-theme",
+      "command": "/kodo-design:design-theme",
+      "description": "Audit a color theme for WCAG 2.2 AA/AAA accessibility compliance"
+    },
+    {
+      "name": "design-inspire",
+      "command": "/kodo-design:design-inspire",
+      "description": "Research design inspiration from Dribbble, Behance, 21st.dev"
+    }
+  ]
 }

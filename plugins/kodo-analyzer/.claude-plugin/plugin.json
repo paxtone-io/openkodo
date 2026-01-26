@@ -1,13 +1,99 @@
 {
   "name": "kodo-analyzer",
-  "version": "0.1.5",
-  "description": "Codebase analysis: security, performance, documentation gaps",
-  "author": {
-    "name": "Mack Górski",
-    "email": "mack@openkodo.dev"
-  },
-  "homepage": "https://openkodo.dev",
-  "repository": "https://github.com/paxtone-io/openkodo",
-  "license": "MIT",
-  "keywords": ["analysis", "security", "performance", "documentation", "audit"]
+  "version": "0.1.7",
+  "description": "Comprehensive codebase analysis for health checks, gap detection, security audits, and recommendations",
+  "agents": [
+    {
+      "name": "kodo-codebase-analyzer",
+      "file": "agents/kodo-codebase-analyzer.md",
+      "model": "sonnet",
+      "description": "Main orchestrator for comprehensive codebase analysis. Spawns 8 specialized sub-agents."
+    },
+    {
+      "name": "kodo-database-analyzer",
+      "file": "agents/analyzers/kodo-database-analyzer.md",
+      "model": "haiku",
+      "description": "Database schema analyzer for RLS, indexes, and unused detection."
+    },
+    {
+      "name": "kodo-api-analyzer",
+      "file": "agents/analyzers/kodo-api-analyzer.md",
+      "model": "haiku",
+      "description": "API endpoint analyzer for auth coverage, error handling, and edge function candidates."
+    },
+    {
+      "name": "kodo-frontend-analyzer",
+      "file": "agents/analyzers/kodo-frontend-analyzer.md",
+      "model": "haiku",
+      "description": "Frontend component analyzer for accessibility, state management, and performance."
+    },
+    {
+      "name": "kodo-dependencies-analyzer",
+      "file": "agents/analyzers/kodo-dependencies-analyzer.md",
+      "model": "haiku",
+      "description": "Dependency analyzer for outdated packages, vulnerabilities, and alternatives."
+    },
+    {
+      "name": "kodo-posthog-analyzer",
+      "file": "agents/analyzers/kodo-posthog-analyzer.md",
+      "model": "haiku",
+      "description": "Analytics analyzer for event coverage, feature flags, and tracking completeness."
+    },
+    {
+      "name": "kodo-documentation-analyzer",
+      "file": "agents/analyzers/kodo-documentation-analyzer.md",
+      "model": "haiku",
+      "description": "Documentation analyzer for coverage, accuracy, and staleness detection."
+    },
+    {
+      "name": "kodo-security-analyzer",
+      "file": "agents/analyzers/kodo-security-analyzer.md",
+      "model": "sonnet",
+      "description": "Security vulnerability analyzer for auth, validation, secrets, and CVSS scoring."
+    },
+    {
+      "name": "kodo-performance-analyzer",
+      "file": "agents/analyzers/kodo-performance-analyzer.md",
+      "model": "sonnet",
+      "description": "Performance bottleneck analyzer for queries, bundles, caching, and render optimization."
+    }
+  ],
+  "commands": [
+    {
+      "name": "analyze",
+      "file": "commands/kodo-analyze.md",
+      "description": "Comprehensive codebase analysis and health scoring"
+    }
+  ],
+  "skills": [
+    {
+      "name": "analyzer",
+      "file": "skills/analyzer/SKILL.md",
+      "command": "/kodo-analyzer:analyzer",
+      "description": "Comprehensive codebase analysis and health scoring methodology"
+    },
+    {
+      "name": "deep-analyze",
+      "file": "skills/deep-analyze/SKILL.md",
+      "command": "/kodo-analyzer:deep-analyze",
+      "description": "Deep analysis: extract full content and learnings from documentation"
+    }
+  ],
+  "references": [
+    {
+      "name": "analysis-templates",
+      "file": "skills/analyzer/references/analysis-templates.md",
+      "description": "Report templates for analysis output"
+    },
+    {
+      "name": "issue-categories",
+      "file": "skills/analyzer/references/issue-categories.md",
+      "description": "Issue severity definitions and classification"
+    },
+    {
+      "name": "health-scoring",
+      "file": "skills/analyzer/references/health-scoring.md",
+      "description": "Health score calculation methodology"
+    }
+  ]
 }
