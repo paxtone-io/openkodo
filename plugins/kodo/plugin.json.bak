@@ -1,6 +1,6 @@
 {
   "name": "kodo",
-  "version": "0.1.5",
+  "version": "1.0.0",
   "description": "Kodo CLI integration for Claude Code - universal process skills and self-learning",
   "hooks": {
     "SessionStart": [
@@ -13,15 +13,8 @@
     "PreCompact": [
       {
         "type": "command",
-        "command": "kodo reflect --hook precompact --quiet",
+        "command": "kodo reflect --auto --source precompact",
         "description": "Auto-capture learnings before context compaction"
-      }
-    ],
-    "Stop": [
-      {
-        "type": "command",
-        "command": "kodo reflect --hook stop --quiet",
-        "description": "Auto-capture learnings when Claude stops responding"
       }
     ],
     "SessionEnd": [
