@@ -1,13 +1,13 @@
 {
-  "version": "0.1.2",
-  "updated_at": "2026-01-25T17:09:39Z",
+  "version": "0.1.3",
+  "updated_at": "2026-01-26T18:00:26Z",
   "plugins": [
     {
       "id": "kodo",
       "name": "Kodo Core",
       "description": "Core development workflows: planning, review, debugging, and self-learning",
-      "version": "0.1.2",
-      "min_cli_version": "0.1.2",
+      "version": "0.1.3",
+      "min_cli_version": "0.1.3",
       "category": "development",
       "tags": ["planning", "review", "debugging", "learning"],
       "path": "./plugins/kodo"
@@ -16,8 +16,8 @@
       "id": "kodo-design",
       "name": "Kodo Design",
       "description": "UI/UX design workflows with WCAG AAA accessibility compliance",
-      "version": "0.1.2",
-      "min_cli_version": "0.1.2",
+      "version": "0.1.3",
+      "min_cli_version": "0.1.3",
       "category": "design",
       "tags": ["ui", "ux", "accessibility", "wcag"],
       "path": "./plugins/kodo-design"
@@ -26,8 +26,8 @@
       "id": "kodo-analyzer",
       "name": "Kodo Analyzer",
       "description": "Codebase analysis: security, performance, documentation gaps",
-      "version": "0.1.2",
-      "min_cli_version": "0.1.2",
+      "version": "0.1.3",
+      "min_cli_version": "0.1.3",
       "category": "analysis",
       "tags": ["security", "performance", "documentation", "audit"],
       "path": "./plugins/kodo-analyzer"
@@ -36,8 +36,8 @@
       "id": "kodo-supabase",
       "name": "Kodo Supabase",
       "description": "Supabase integration: databases, migrations, Edge Functions",
-      "version": "0.1.2",
-      "min_cli_version": "0.1.2",
+      "version": "0.1.3",
+      "min_cli_version": "0.1.3",
       "category": "backend",
       "tags": ["supabase", "database", "postgres", "edge-functions"],
       "path": "./plugins/kodo-supabase"
@@ -46,8 +46,8 @@
       "id": "kodo-posthog",
       "name": "Kodo PostHog",
       "description": "PostHog analytics: events, feature flags, experiments",
-      "version": "0.1.2",
-      "min_cli_version": "0.1.2",
+      "version": "0.1.3",
+      "min_cli_version": "0.1.3",
       "category": "analytics",
       "tags": ["posthog", "analytics", "feature-flags", "experiments"],
       "path": "./plugins/kodo-posthog"
