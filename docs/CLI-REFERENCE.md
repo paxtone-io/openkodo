@@ -61,19 +61,35 @@ kodo init [OPTIONS]
 
 | Option | Description |
 |--------|-------------|
-| `--plugin` | Create Claude Code plugin structure |
 | `--hooks` | Generate hooks.json for lifecycle events |
 | `--add-only` | Merge with existing setup, preserving user content. Only adds/updates kodo-managed sections |
 | `--force` | Backup existing setup and overwrite. Creates timestamped backup in `.kodo.backup/` |
+| `--no-agent-doc` | Skip agent documentation generation (AGENTS.md, CLAUDE.md, etc.) |
+| `--agent <TOOLS>` | Specify AI coding assistant(s) to generate docs for (comma-separated). Values: claude-code, cursor, warp, copilot, windsurf, aider |
 
 **Creates:**
 
 - `kodo.toml` - Project configuration (in project root)
+- `AGENTS.md` - Industry-standard AI agent instructions
 - `.kodo/` directory containing:
   - `context-tree/` - Hierarchical knowledge storage
   - `learnings/` - Captured patterns by confidence level
   - `logs/` - Debug and trace logs
   - `routing.yaml.example` - Example routing rules
+- Tool-specific agent documentation (based on selected agents):
+  - `.claude/CLAUDE.md` - Claude Code instructions
+  - `.cursor/rules/kodo.mdc` - Cursor rules
+  - `.github/copilot-instructions.md` - GitHub Copilot instructions
+  - `.windsurf/rules/kodo.md` - Windsurf/Codeium rules
+
+**Examples:**
+
+```bash
+kodo init                                    # Interactive mode
+kodo init --agent claude-code,cursor         # Specific agents
+kodo init --no-agent-doc                     # Skip agent docs
+kodo init --add-only                         # Preserve existing content
+```
 
 ---
 
@@ -346,7 +362,7 @@ kodo track board
 
 ### `kodo docs`
 
-Manage documentation in Notion.
+Manage documentation - both AI agent documentation and Notion documentation.
 
 ```bash
 kodo docs <COMMAND> [OPTIONS]
@@ -356,12 +372,51 @@ kodo docs <COMMAND> [OPTIONS]
 
 | Command | Description |
 |---------|-------------|
-| `create` | Create a new documentation page |
+| `agent` | Manage AI agent documentation files |
+| `create` | Create a new documentation page in Notion |
 | `adr` | Create an Architecture Decision Record |
 | `update` | Update existing documentation |
 | `wiki` | Sync wiki from local .kodo/ context |
 | `summary` | Generate executive summary from learnings |
 | `search` | Search documentation |
+
+#### `kodo docs agent`
+
+Manage AI coding assistant documentation files (AGENTS.md, CLAUDE.md, etc.).
+
+```bash
+kodo docs agent <ACTION>
+```
+
+**Actions:**
+
+| Action | Description |
+|--------|-------------|
+| `status` | Show status of all agent documentation files |
+| `sync` | Synchronize all agent doc files from AGENTS.md |
+| `regenerate` | Regenerate docs from kodo.toml |
+| `regenerate --force` | Force regeneration even if files exist |
+
+**Files Managed:**
+
+| File | Agent | Purpose |
+|------|-------|---------|
+| `AGENTS.md` | All | Industry standard (source of truth) |
+| `.claude/CLAUDE.md` | Claude Code | Claude-specific instructions |
+| `.cursor/rules/kodo.mdc` | Cursor | Cursor rules (MDC format) |
+| `.github/copilot-instructions.md` | GitHub Copilot | Copilot instructions |
+| `.windsurf/rules/kodo.md` | Windsurf | Windsurf/Codeium rules |
+
+**Examples:**
+
+```bash
+kodo docs agent status              # Show status of agent doc files
+kodo docs agent sync                # Sync all files from AGENTS.md
+kodo docs agent regenerate          # Regenerate from kodo.toml
+kodo docs agent regenerate --force  # Force regenerate
+```
+
+#### Notion Documentation
 
 **Examples:**
 
@@ -562,7 +617,26 @@ The `kodo.toml` file is created in your project root by `kodo init`. Here's the 
 
 [project]
 name = "my-project"       # Project name (used in cloud sync)
+description = "A brief description of your project"
 version = "0.1.0"         # Project version
+
+[tech_stack]
+languages = ["rust", "typescript"]
+frameworks = ["axum", "react"]
+package_managers = ["cargo", "pnpm"]
+test_frameworks = ["cargo-test", "vitest"]
+deployment = "docker"     # local, docker, aws, gcp, azure, vercel, etc.
+
+[code_style]
+indent = "spaces"         # "spaces" or "tabs"
+indent_size = 4           # 2, 4, etc.
+quotes = "double"         # "single" or "double" (for JS/TS)
+semicolons = true         # For JS/TS
+line_length = 100         # 80, 100, 120, etc.
+
+[agents]
+primary = "claude-code"   # Primary AI coding assistant
+enabled = ["claude-code", "cursor"]  # All enabled agents
 
 [learning]
 auto_reflect = true       # Enable automatic reflection
@@ -581,6 +655,17 @@ api_url = "https://app.openkodo.com/api/cli"  # Cloud API URL (can be overridden
 sync_scope = "all"        # What to sync: all, context, learnings
 exclude = [".env", "*.tmp"]  # Patterns to exclude from cloud sync
 ```
+
+**Supported Agents:**
+
+| Agent ID | Tool |
+|----------|------|
+| `claude-code` | Claude Code (Anthropic) |
+| `cursor` | Cursor |
+| `warp` | Warp |
+| `copilot` | GitHub Copilot |
+| `windsurf` | Windsurf/Codeium |
+| `aider` | Aider |
 
 ### Environment Variables
 

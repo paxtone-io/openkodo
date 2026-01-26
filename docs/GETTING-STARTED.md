@@ -62,10 +62,27 @@ kodo init
 This creates:
 
 - `kodo.toml` - Project configuration file (in project root)
+- `AGENTS.md` - Industry-standard AI agent instructions
 - `.kodo/` directory containing:
   - `context-tree/` - Hierarchical knowledge storage
   - `learnings/` - Captured patterns by confidence level
   - `logs/` - Debug and trace logs
+
+During initialization, you'll be asked to select which AI coding assistants you use. Kodo generates appropriate documentation files for each:
+
+| Agent | File Generated |
+|-------|----------------|
+| Claude Code | `.claude/CLAUDE.md` |
+| Cursor | `.cursor/rules/kodo.mdc` |
+| GitHub Copilot | `.github/copilot-instructions.md` |
+| Windsurf | `.windsurf/rules/kodo.md` |
+| Warp, Aider | Use `AGENTS.md` directly |
+
+You can also specify agents via CLI:
+
+```bash
+kodo init --agent claude-code,cursor
+```
 
 ### Analyze Your Codebase
 
@@ -101,6 +118,13 @@ After initialization, your project will have:
 ```
 your-project/
 ├── kodo.toml              # Project configuration
+├── AGENTS.md              # Industry-standard AI instructions
+├── .claude/               # Claude Code specific
+│   ├── CLAUDE.md          # Claude instructions (superset of AGENTS.md)
+│   └── skills/            # Custom skills
+├── .cursor/               # Cursor specific (if selected)
+│   └── rules/
+│       └── kodo.mdc       # Cursor rules
 ├── .kodo/
 │   ├── context-tree/      # Organized knowledge
 │   │   ├── architecture/
@@ -121,7 +145,18 @@ The main configuration file:
 ```toml
 [project]
 name = "your-project"
+description = "A brief description"
 version = "0.1.0"
+
+[tech_stack]
+languages = ["rust"]
+frameworks = ["axum"]
+package_managers = ["cargo"]
+test_frameworks = ["cargo-test"]
+
+[agents]
+primary = "claude-code"
+enabled = ["claude-code", "cursor"]
 
 [learning]
 auto_reflect = true
@@ -204,6 +239,23 @@ kodo sync --push
 # Sync to cloud (requires token)
 kodo sync --cloud-only
 ```
+
+### 5. Manage Agent Documentation
+
+Keep your AI agent documentation in sync:
+
+```bash
+# Check status of agent doc files
+kodo docs agent status
+
+# Sync all files from AGENTS.md (source of truth)
+kodo docs agent sync
+
+# Regenerate all agent docs from kodo.toml
+kodo docs agent regenerate
+```
+
+When you update project information in `AGENTS.md`, run `kodo docs agent sync` to propagate changes to all tool-specific files.
 
 ---
 
