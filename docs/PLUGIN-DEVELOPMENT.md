@@ -10,7 +10,7 @@ A kodo plugin follows this structure:
 my-plugin/
 ├── .claude-plugin/
 │   └── plugin.json         # Claude Code metadata
-├── plugin.json             # Kodo CLI metadata
+├── plugin.json             # Kodo CLI metadata (skills, agents, commands, hooks)
 ├── README.md               # Plugin documentation
 ├── agents/                 # AI agent definitions
 │   └── my-agent.md
@@ -28,6 +28,8 @@ my-plugin/
 ## Plugin Metadata
 
 ### `.claude-plugin/plugin.json` (Claude Code)
+
+This file registers the plugin with Claude Code:
 
 ```json
 {
@@ -47,11 +49,21 @@ my-plugin/
 
 ### `plugin.json` (Kodo CLI)
 
+This file registers skills, agents, commands, and hooks:
+
 ```json
 {
   "name": "my-plugin",
   "version": "0.1.0",
   "description": "My awesome plugin for specialized workflows",
+  "skills": [
+    {
+      "name": "my-skill",
+      "file": "skills/my-skill/SKILL.md",
+      "command": "/my-plugin-my-skill",
+      "description": "Skill description"
+    }
+  ],
   "agents": [
     {
       "name": "my-agent",
@@ -60,28 +72,49 @@ my-plugin/
       "description": "Agent description"
     }
   ],
-  "skills": [
-    {
-      "name": "my-skill",
-      "file": "skills/my-skill/SKILL.md",
-      "command": "/my-skill",
-      "description": "Skill description"
-    }
-  ],
   "commands": [
     {
       "name": "my-command",
       "file": "commands/my-command.md",
-      "command": "/my-command",
+      "command": "/my-plugin-my-command",
       "description": "Command description"
     }
   ]
 }
 ```
 
+### Command Format
+
+Slash commands use **hyphen-separated** format:
+
+```
+/kodo-brainstorm     ✓ Correct (hyphen)
+/kodo brainstorm     ✗ Wrong (space)
+/kodo:brainstorm     ✗ Wrong (colon)
+```
+
+For plugin-specific commands, prefix with the plugin name:
+
+```
+/kodo-design         # kodo-design plugin
+/kodo-supa-db        # kodo-supabase plugin
+/kodo-ph-event       # kodo-posthog plugin
+/kodo-analyze        # kodo-analyzer plugin
+```
+
 ## Creating Agents
 
-Agents are specialized AI assistants defined in markdown files.
+Agents are specialized AI assistants defined in markdown files with YAML frontmatter.
+
+### Agent Naming Convention
+
+Follow the `kodo-{single-word-role}` pattern:
+
+```
+kodo-explorer     kodo-reviewer     kodo-tester
+kodo-architect    kodo-debugger     kodo-planner
+kodo-feature      kodo-refactor     kodo-sentinel
+```
 
 ### `agents/my-agent.md`
 
@@ -91,6 +124,7 @@ name: my-agent
 description: Specialized agent for domain-specific tasks
 model: sonnet
 tools: [Read, Write, Edit, Bash, Glob, Grep]
+color: cyan
 ---
 
 # My Agent
@@ -114,17 +148,37 @@ You are a specialized agent for [domain].
 - Guideline 2
 ```
 
+### Frontmatter Fields
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| `name` | Yes | Agent identifier (kodo-{role} pattern) |
+| `description` | Yes | What the agent does (shown in agent list) |
+| `model` | Yes | AI model: `haiku`, `sonnet`, or `opus` |
+| `tools` | Yes | Available tools: Read, Write, Edit, Bash, Glob, Grep, WebFetch, etc. |
+| `color` | No | Terminal color for output: cyan, blue, magenta, green, red, orange, purple, yellow, bright_yellow, bright_red, bright_magenta, bright_white |
+
 ### Model Selection
 
-| Model | Use For |
-|-------|---------|
-| `haiku` | Fast, simple tasks (file scaffolding, boilerplate) |
-| `sonnet` | Standard tasks (implementation, analysis) |
-| `opus` | Complex tasks (architecture, algorithms) |
+| Model | Cost | Use For |
+|-------|------|---------|
+| `haiku` | Low | File scaffolding, boilerplate, simple sync, test generation |
+| `sonnet` | Medium | Core implementation, analysis, feature work, debugging |
+| `opus` | High | Complex architecture, learning curation, ambiguous specs |
 
 ## Creating Skills
 
-Skills are reusable workflows that can be invoked via `/skill-name`.
+Skills are reusable workflows invoked via slash commands.
+
+### Skill Naming Convention
+
+Plugin skills use simple verb/noun names in their directory:
+
+```
+skills/brainstorm/SKILL.md    # invoked as /kodo-brainstorm
+skills/design/SKILL.md        # invoked as /kodo-design
+skills/pr-context/SKILL.md    # invoked as /kodo-pr-context
+```
 
 ### `skills/my-skill/SKILL.md`
 
@@ -132,7 +186,7 @@ Skills are reusable workflows that can be invoked via `/skill-name`.
 ---
 name: my-skill
 description: Short description of what this skill does
-command: /my-skill
+command: /my-plugin-my-skill
 ---
 
 # My Skill
@@ -160,18 +214,6 @@ Use this skill when you need to [purpose].
 
 - [patterns](./references/patterns.md) - Common patterns
 - [checklist](./references/checklist.md) - Verification checklist
-
-## Examples
-
-### Example 1: Basic Usage
-```
-/my-skill create a new component
-```
-
-### Example 2: With Options
-```
-/my-skill --verbose refactor authentication
-```
 ```
 
 ### Reference Files
@@ -189,16 +231,22 @@ Description and example...
 Description and example...
 ```
 
+### Special Frontmatter
+
+| Field | Description |
+|-------|-------------|
+| `disable-model-invocation: true` | Skill runs without calling an AI model (for checklists, templates) |
+
 ## Creating Commands
 
-Commands are quick actions invoked via slash commands.
+Commands are quick slash-command actions with structured arguments.
 
 ### `commands/my-command.md`
 
 ```markdown
 ---
 name: my-command
-command: /my-command
+command: /my-plugin-my-command
 description: Quick action for specific task
 args:
   - name: target
@@ -228,7 +276,9 @@ Execute this command to [purpose].
 
 ## Hooks
 
-Define plugin-specific hooks in `hooks/hooks.json`:
+Define plugin hooks for lifecycle events.
+
+### Plugin Hooks (`hooks/hooks.json`)
 
 ```json
 {
@@ -249,22 +299,76 @@ Define plugin-specific hooks in `hooks/hooks.json`:
 }
 ```
 
+### Inline Hooks (in `plugin.json`)
+
+```json
+{
+  "name": "my-plugin",
+  "hooks": {
+    "SessionStart": [
+      {
+        "type": "command",
+        "command": "kodo context load --quiet",
+        "description": "Load context at session start"
+      }
+    ],
+    "Stop": [
+      {
+        "type": "command",
+        "command": "kodo reflect --hook stop --quiet",
+        "description": "Capture learnings when Claude stops"
+      }
+    ]
+  }
+}
+```
+
 ### Available Hook Events
 
-| Event | Trigger |
-|-------|---------|
-| `SessionStart` | Claude Code session begins |
-| `SessionEnd` | Session ends |
-| `PreToolUse` | Before a tool is called |
-| `PostToolUse` | After a tool returns |
-| `PreCompact` | Before context compaction |
-| `Stop` | When Claude stops responding |
+| Event | Trigger | Use Case |
+|-------|---------|----------|
+| `SessionStart` | Claude Code session begins | Load context, check status |
+| `SessionEnd` | Session ends | Prompt for reflection |
+| `PreToolUse` | Before a tool is called | Block dangerous operations, validate inputs |
+| `PostToolUse` | After a tool returns | Auto-format code, run linters |
+| `PreCompact` | Before context compaction | Capture learnings before memory is trimmed |
+| `Stop` | When Claude stops responding | Auto-capture learnings |
+| `SubagentStop` | When a subagent finishes | Capture subagent-specific learnings |
+| `UserPromptSubmit` | User sends a message | Count messages, track session activity |
+
+### Hook Types
+
+| Type | Description |
+|------|-------------|
+| `command` | Runs a shell command. Receives JSON on stdin. Exit 0 = allow, exit 1 = block (PreToolUse only). |
+| `prompt` | Injects a prompt into the conversation. |
+
+### Writing Shell Hook Scripts
+
+Hook scripts receive JSON on stdin with tool input details:
+
+```bash
+#!/bin/bash
+set -e
+
+INPUT=$(cat)
+COMMAND=$(echo "$INPUT" | jq -r '.tool_input.command // empty' 2>/dev/null)
+FILE_PATH=$(echo "$INPUT" | jq -r '.tool_input.file_path // empty' 2>/dev/null)
+
+# Your logic here
+if echo "$FILE_PATH" | grep -qE '\.env$'; then
+    echo "BLOCK: Cannot edit .env files directly"
+    exit 1
+fi
+
+exit 0
+```
 
 ## Testing Your Plugin
 
 ### Local Testing
 
-1. Clone your plugin to the plugins directory:
+1. Symlink your plugin to the plugins directory:
    ```bash
    ln -s ~/my-plugin ~/.claude/plugins/my-plugin
    ```
@@ -282,7 +386,17 @@ ls -la my-plugin/plugin.json
 
 # Validate JSON
 cat my-plugin/plugin.json | jq .
+cat my-plugin/.claude-plugin/plugin.json | jq .
 ```
+
+### Checklist
+
+- [ ] `plugin.json` and `.claude-plugin/plugin.json` have matching versions
+- [ ] All skill files referenced in `plugin.json` exist
+- [ ] All agent files referenced in `plugin.json` exist
+- [ ] All commands use hyphen-separated format (`/prefix-name`)
+- [ ] Agents have valid frontmatter (name, description, model, tools)
+- [ ] Skills have valid frontmatter (name, description)
 
 ## Publishing
 
@@ -311,7 +425,7 @@ cat my-plugin/plugin.json | jq .
 }
 ```
 
-3. Users can install via `/plugin` → Add Marketplace → `owner/repo`
+3. Users install via `/plugin` > Add Marketplace > `owner/repo`
 
 ### Version Management
 
@@ -326,13 +440,15 @@ cat my-plugin/plugin.json | jq .
 3. **Sensible Defaults** - Work out-of-the-box with minimal config
 4. **Non-Destructive** - Don't modify user files without confirmation
 5. **Testable** - Include examples that can be tested
+6. **Consistent Naming** - Follow `kodo-{role}` for agents, hyphen-separated for commands
+7. **Right-Sized Models** - Use haiku for simple tasks, sonnet for standard, opus for complex
 
 ## Example Plugins
 
 See these official plugins for reference:
 
-- [kodo](../plugins/kodo/) - Core workflows
-- [kodo-design](../plugins/kodo-design/) - UI/UX design
-- [kodo-supabase](../plugins/kodo-supabase/) - Supabase integration
-- [kodo-posthog](../plugins/kodo-posthog/) - PostHog analytics
-- [kodo-analyzer](../plugins/kodo-analyzer/) - Codebase analysis
+- [kodo](../plugins/kodo/) - Core development workflows (16 skills, 12 agents)
+- [kodo-design](../plugins/kodo-design/) - UI/UX design (5 skills, 2 agents)
+- [kodo-analyzer](../plugins/kodo-analyzer/) - Codebase analysis (2 skills, 9 agents)
+- [kodo-posthog](../plugins/kodo-posthog/) - PostHog analytics (6 commands, 3 agents)
+- [kodo-supabase](../plugins/kodo-supabase/) - Supabase integration (8 commands, 3 agents)
