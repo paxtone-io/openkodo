@@ -34,28 +34,83 @@
   "skills": [
     {
       "name": "brainstorm",
-      "command": "/kodo brainstorm",
+      "command": "/kodo-brainstorm",
       "description": "Turn ideas into fully formed designs through collaborative questioning"
     },
     {
       "name": "plan",
-      "command": "/kodo plan",
+      "command": "/kodo-plan",
       "description": "Create implementation plans with TDD approach"
     },
     {
       "name": "execute",
-      "command": "/kodo execute",
+      "command": "/kodo-execute",
       "description": "Execute implementation plans with checkpoints"
     },
     {
       "name": "review",
-      "command": "/kodo review",
+      "command": "/kodo-review",
       "description": "Code review with confidence-based filtering"
     },
     {
       "name": "debug",
-      "command": "/kodo debug",
+      "command": "/kodo-debug",
       "description": "Systematic debugging workflow"
+    },
+    {
+      "name": "pr-context",
+      "command": "/kodo-pr-context",
+      "description": "Summarize session learnings for PR descriptions"
+    },
+    {
+      "name": "release-check",
+      "command": "/kodo-release-check",
+      "description": "Validate pre-release checklist before publishing"
+    },
+    {
+      "name": "track",
+      "command": "/kodo-track",
+      "description": "Track work in GitHub Projects - issues, PRs, sprint planning"
+    },
+    {
+      "name": "docs",
+      "command": "/kodo-docs",
+      "description": "Manage Notion documentation - sync, generate, update"
+    },
+    {
+      "name": "flow",
+      "command": "/kodo-flow",
+      "description": "Route content to the right destination - GitHub, Notion, or local"
+    },
+    {
+      "name": "curate",
+      "command": "/kodo-curate",
+      "description": "Add and manage context entries in the knowledge base"
+    },
+    {
+      "name": "query",
+      "command": "/kodo-query",
+      "description": "Search accumulated context and learnings"
+    },
+    {
+      "name": "sync",
+      "command": "/kodo-sync",
+      "description": "Synchronize learnings and context via Git or cloud"
+    },
+    {
+      "name": "test",
+      "command": "/kodo-test",
+      "description": "Intelligent test runner - find affected tests, run coverage"
+    },
+    {
+      "name": "refactor",
+      "command": "/kodo-refactor",
+      "description": "Guided safe refactoring with test verification"
+    },
+    {
+      "name": "explore",
+      "command": "/kodo-explore",
+      "description": "Deep codebase exploration and pattern discovery"
     }
   ],
   "agents": [
@@ -74,6 +129,38 @@
     {
       "name": "kodo-reviewer",
       "file": "agents/kodo-reviewer.md"
+    },
+    {
+      "name": "kodo-debugger",
+      "file": "agents/kodo-debugger.md"
+    },
+    {
+      "name": "kodo-refactor",
+      "file": "agents/kodo-refactor.md"
+    },
+    {
+      "name": "kodo-tester",
+      "file": "agents/kodo-tester.md"
+    },
+    {
+      "name": "kodo-planner",
+      "file": "agents/kodo-planner.md"
+    },
+    {
+      "name": "kodo-curator",
+      "file": "agents/kodo-curator.md"
+    },
+    {
+      "name": "kodo-sentinel",
+      "file": "agents/kodo-sentinel.md"
+    },
+    {
+      "name": "kodo-optimizer",
+      "file": "agents/kodo-optimizer.md"
+    },
+    {
+      "name": "kodo-documenter",
+      "file": "agents/kodo-documenter.md"
     }
   ]
 }

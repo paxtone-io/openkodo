@@ -15,27 +15,27 @@
   "skills": [
     {
       "name": "design",
-      "command": "/kodo design",
+      "command": "/kodo-design",
       "description": "Design a specific UI component or page with Design Bible principles"
     },
     {
       "name": "design-system",
-      "command": "/kodo design-system",
+      "command": "/kodo-design-system",
       "description": "Create or update project design foundation in docs/rules/design-system.md"
     },
     {
       "name": "design-audit",
-      "command": "/kodo design-audit",
+      "command": "/kodo-design-audit",
       "description": "Audit existing UI for consistency, accessibility, and UX issues"
     },
     {
       "name": "design-theme",
-      "command": "/kodo design-theme",
+      "command": "/kodo-design-theme",
       "description": "Audit a color theme for WCAG 2.2 AA/AAA accessibility compliance"
     },
     {
       "name": "design-inspire",
-      "command": "/kodo design-inspire",
+      "command": "/kodo-design-inspire",
       "description": "Research design inspiration from Dribbble, Behance, 21st.dev"
     }
   ]

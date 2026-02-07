@@ -6,7 +6,7 @@
     {
       "name": "posthog",
       "path": "skills/posthog/SKILL.md",
-      "command": "/kodo posthog",
+      "command": "/kodo-posthog",
       "description": "PostHog analytics, feature flags, and A/B experiments"
     }
   ],
@@ -34,31 +34,31 @@
     {
       "name": "kodo-ph-event",
       "path": "commands/kodo-ph-event.md",
-      "command": "/kodo ph-event",
+      "command": "/kodo-ph-event",
       "description": "Track custom events and manage event documentation for PostHog analytics"
     },
     {
       "name": "kodo-ph-flag",
       "path": "commands/kodo-ph-flag.md",
-      "command": "/kodo ph-flag",
+      "command": "/kodo-ph-flag",
       "description": "Create, update, and manage PostHog feature flags with proper naming and targeting"
     },
     {
       "name": "kodo-ph-experiment",
       "path": "commands/kodo-ph-experiment.md",
-      "command": "/kodo ph-experiment",
+      "command": "/kodo-ph-experiment",
       "description": "Create, monitor, and analyze PostHog experiments with proper hypothesis documentation"
     },
     {
       "name": "kodo-ph-dashboard",
       "path": "commands/kodo-ph-dashboard.md",
-      "command": "/kodo ph-dashboard",
+      "command": "/kodo-ph-dashboard",
       "description": "Create, manage, and organize PostHog dashboards and insights for product analytics"
     },
     {
       "name": "kodo-ph-sync",
       "path": "commands/kodo-ph-sync.md",
-      "command": "/kodo ph-sync",
+      "command": "/kodo-ph-sync",
       "description": "Synchronize PostHog analytics configuration with Notion documentation"
     }
   ],

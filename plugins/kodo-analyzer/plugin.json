@@ -69,13 +69,13 @@
     {
       "name": "analyzer",
       "file": "skills/analyzer/SKILL.md",
-      "command": "/kodo-analyzer:analyzer",
+      "command": "/kodo-analyze",
       "description": "Comprehensive codebase analysis and health scoring methodology"
     },
     {
       "name": "deep-analyze",
       "file": "skills/deep-analyze/SKILL.md",
-      "command": "/kodo-analyzer:deep-analyze",
+      "command": "/kodo-deep-analyze",
       "description": "Deep analysis: extract full content and learnings from documentation"
     }
   ],
