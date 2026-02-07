@@ -1,6 +1,6 @@
 {
   "name": "kodo-posthog",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "PostHog analytics for feature flags, experiments, and product insights",
   "skills": [
     {
