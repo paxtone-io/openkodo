@@ -1,6 +1,6 @@
 {
   "name": "kodo-posthog",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "description": "PostHog analytics: events, feature flags, experiments",
   "author": {
     "name": "Mack Górski",

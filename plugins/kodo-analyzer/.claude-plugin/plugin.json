@@ -1,6 +1,6 @@
 {
   "name": "kodo-analyzer",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "description": "Comprehensive codebase analysis for health checks, gap detection, security audits, and recommendations",
   "agents": [
     {

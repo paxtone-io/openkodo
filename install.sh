@@ -1,4 +1,14 @@
 #!/bin/bash
+# Purpose: Download and install the latest OpenKodo CLI binary from GitHub releases
+# LLM-Note:
+#   Dependencies: requires curl, tar, uname; optionally sudo (if /usr/local/bin is not writable)
+#   Data flow: detects OS (linux/darwin) + arch (x86_64/aarch64) -> fetches latest release tag
+#              from GitHub API -> downloads platform-specific tar.gz archive -> extracts kodo
+#              binary -> installs to /usr/local/bin/kodo
+#   State/Effects: installs or overwrites /usr/local/bin/kodo binary, creates temp dir (auto-cleaned)
+#   Usage: curl -fsSL https://raw.githubusercontent.com/paxtone-io/openkodo/main/install.sh | bash
+#   Safety: uses mktemp with trap for cleanup, checks write permissions before sudo,
+#           verifies installation via `kodo --version`, warns if not in PATH
 set -e
 
 # OpenKodo installer
