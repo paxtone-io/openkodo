@@ -90,7 +90,7 @@ main() {
     info "Latest version: $version"
 
     # Construct download URL
-    local filename="kodo-${target}.tar.gz"
+    local filename="kodo-${version}-${target}.tar.gz"
     local url="https://github.com/${REPO}/releases/download/${version}/${filename}"
 
     info "Downloading from: $url"
