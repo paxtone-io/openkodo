@@ -135,7 +135,7 @@ main() {
     mkdir -p "$install_dir"
 
     # Remove stale kodo binaries from other locations to avoid PATH shadowing
-    for candidate in "$HOME/.local/bin" "/usr/local/bin"; do
+    for candidate in "$HOME/.cargo/bin" "$HOME/.local/bin" "/usr/local/bin"; do
         if [ "$candidate" != "$install_dir" ] && [ -f "$candidate/$BINARY_NAME" ]; then
             info "Removing old $BINARY_NAME from $candidate..."
             if [ -w "$candidate" ]; then
