@@ -1,6 +1,6 @@
 # CLI Reference
 
-Complete command reference for the `kodo` CLI v0.1.8.
+Complete command reference for the `kodo` CLI v0.2.0.
 
 ## Table of Contents
 
@@ -25,6 +25,8 @@ Complete command reference for the `kodo` CLI v0.1.8.
   - [kodo index](#kodo-index)
   - [kodo update](#kodo-update)
   - [kodo auth](#kodo-auth)
+  - [kodo mcp](#kodo-mcp)
+  - [kodo observe](#kodo-observe)
 - [Configuration](#configuration)
   - [kodo.toml Reference](#kodotoml-reference)
   - [Environment Variables](#environment-variables)
@@ -313,15 +315,28 @@ kodo query [OPTIONS] [QUERY]
 
 | Option | Description |
 |--------|-------------|
+| `-d, --detail <LEVEL>` | Detail level: `compact` (~50 tokens/result), `timeline` (~200 tokens, default), `full` (complete) |
+| `--id <PATH>` | Lookup a specific entry by ID or path |
 | `-f, --format <FORMAT>` | Output format: json, markdown, plain (default: plain) |
 | `-i, --interactive` | Interactive search mode |
-| `--full` | Show full content |
+| `--full` | Show full content (overrides `--detail` to `full`) |
 | `-l, --limit <N>` | Maximum number of results (default: 10) |
+
+**Detail Levels:**
+
+| Level | Aliases | Tokens/Result | Shows |
+|-------|---------|---------------|-------|
+| `compact` | `c`, `1` | ~50 | Title, domain, score |
+| `timeline` | `t`, `2` | ~200 | + tags, match reasons, 100-char preview |
+| `full` | `f`, `3` | Unlimited | Complete entry with all metadata |
 
 **Examples:**
 
 ```bash
-kodo query "authentication"
+kodo query "authentication"                          # Default: timeline detail
+kodo query "authentication" --detail compact          # Minimal output
+kodo query "authentication" -d full                   # Complete entries
+kodo query --id architecture/api/rest-conventions     # Direct entry lookup
 kodo query "error handling" --format json
 kodo query --interactive
 kodo query "api" --full --limit 5
@@ -594,6 +609,17 @@ kodo hooks <COMMAND> [OPTIONS]
 | `--global` | Install hooks globally |
 | `--force` | Overwrite existing hooks |
 
+**Installed Hooks:**
+
+| Event | Script | Description |
+|-------|--------|-------------|
+| **SessionStart** | `kodo-session-start.sh` | Load context and active learnings |
+| **UserPromptSubmit** | `kodo-message-count.sh` | Track message count for auto-reflection |
+| **PostToolUse** | `kodo-observe.sh` | Auto-capture observations from tool outputs |
+| **PreCompact** | `kodo-reflect.sh` | Capture learnings before context compaction |
+| **Stop** | `kodo-reflect.sh` | Capture learnings when Claude stops |
+| **SubagentStop** | `kodo-reflect.sh` | Capture subagent-specific learnings |
+
 **Examples:**
 
 ```bash
@@ -762,6 +788,103 @@ Displays step-by-step instructions for obtaining API tokens, finding Notion data
 
 ---
 
+### `kodo mcp`
+
+MCP (Model Context Protocol) server for exposing kodo context to AI tools.
+
+```bash
+kodo mcp <COMMAND>
+```
+
+**Subcommands:**
+
+| Command | Description |
+|---------|-------------|
+| `serve` | Start the MCP server (stdio transport, JSON-RPC 2.0) |
+
+#### `kodo mcp serve`
+
+Starts a Model Context Protocol server over stdio, allowing any MCP-compatible client (Claude Desktop, VS Code extensions, etc.) to access your project's context.
+
+```bash
+kodo mcp serve
+```
+
+**Protocol:** MCP version `2025-11-25` over JSON-RPC 2.0 (stdio transport)
+
+**Exposed Tools:**
+
+| Tool | Description | Parameters |
+|------|-------------|------------|
+| `kodo_query` | Search the context knowledge base | `query`, `detail` (compact/timeline/full), `limit`, `id` |
+| `kodo_status` | Show project status and configuration | (none) |
+| `kodo_curate` | Add a new context entry | `domain`, `topic`, `title`, `content`, `tags`, `confidence` |
+| `kodo_learn_list` | List accumulated learnings | `category` (optional filter) |
+| `kodo_observe` | Capture an observation from tool output | `tool_name`, `content`, `session_id` |
+
+**Dynamic Resources (kodo:// URI scheme):**
+
+| URI | Description |
+|-----|-------------|
+| `kodo://context` | Project context file (`.kodo/context.md`) |
+| `kodo://learnings/{name}` | Individual learning category files |
+| `kodo://context-tree/{domain}` | Context tree domain entries |
+
+**Prompts:**
+
+| Prompt | Description | Arguments |
+|--------|-------------|-----------|
+| `kodo-reflect` | Guided session reflection | `session_summary` (optional) |
+| `kodo-query-guide` | Guided knowledge base search | `topic` (required) |
+
+**Client Configuration Example (Claude Desktop):**
+
+```json
+{
+  "mcpServers": {
+    "kodo": {
+      "command": "kodo",
+      "args": ["mcp", "serve"]
+    }
+  }
+}
+```
+
+---
+
+### `kodo observe`
+
+Capture an observation from tool output. This command is hidden from `--help` and is designed to be called by PostToolUse hooks.
+
+```bash
+kodo observe [OPTIONS]
+```
+
+**Options:**
+
+| Option | Description |
+|--------|-------------|
+| `--tool <NAME>` | Name of the tool that produced the output |
+| `--session-id <ID>` | Session ID for grouping observations |
+| `-q, --quiet` | Suppress output |
+
+**Behavior:**
+
+- Reads tool output from stdin
+- Compresses output to ~500 tokens (~2000 characters)
+- Extracts file references and key concepts (functions, types, errors)
+- Stores observations as YAML-frontmatter Markdown in `.kodo/observations/`
+- 30-second deduplication window prevents duplicate captures
+- Filename pattern: `YYYYMMDD-HHMMSS-toolname.md`
+
+**Example (used by hooks, not typically called manually):**
+
+```bash
+echo "tool output here" | kodo observe --tool Bash --session-id abc123 --quiet
+```
+
+---
+
 ## Configuration
 
 ### kodo.toml Reference
@@ -802,6 +925,11 @@ confidence_threshold = "medium"  # Minimum confidence for auto-apply
 [sync]
 remote = "origin"         # Git remote name
 branch = "main"           # Git branch for sync
+
+[models]
+fast = "haiku"            # Model for fast/cheap tasks (scaffolding, boilerplate)
+standard = "sonnet"       # Model for standard tasks (implementation, analysis)
+premium = "opus"          # Model for complex tasks (architecture, curation)
 
 [integrations]
 github = false            # Enable GitHub integration
@@ -883,18 +1011,28 @@ OPENAI_API_KEY=sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 | 3 | Configuration error |
 | 4 | Not initialized (run `kodo init`) |
 
-## Command Aliases
+## All Commands
 
-For faster access, several commands have short aliases:
-
-| Full Command | Alias |
-|--------------|-------|
-| `kodo curate` | `kodo c` |
-| `kodo query` | `kodo q` |
-| `kodo reflect` | `kodo r` |
-| `kodo track` | `kodo t` |
-| `kodo docs` | `kodo d` |
-| `kodo flow` | `kodo f` |
-| `kodo import` | `kodo i` |
-| `kodo extract` | `kodo x` |
-| `kodo plugin` | `kodo p` |
+| Command | Alias | Description | New in v0.2.0? |
+|---------|-------|-------------|----------------|
+| `kodo init` | -- | Initialize a new kodo project | |
+| `kodo analyze` | `kodo a` | Analyze codebase and generate context | |
+| `kodo extract` | `kodo x` | Extract learnings from a single file | |
+| `kodo reflect` | `kodo r` | Capture learnings from coding sessions | |
+| `kodo curate` | `kodo c` | Add or manage context entries | |
+| `kodo import` | `kodo i` | Import markdown files into context tree | |
+| `kodo query` | `kodo q` | Search accumulated context | Updated |
+| `kodo status` | -- | Show project status | |
+| `kodo sync` | -- | Synchronize context with Git/cloud | |
+| `kodo track` | `kodo t` | Track items in GitHub Projects | |
+| `kodo docs` | `kodo d` | Manage documentation | |
+| `kodo flow` | `kodo f` | Intelligent content routing | |
+| `kodo plugin` | `kodo p` | Manage domain plugins | |
+| `kodo context` | -- | Context management for session hooks | |
+| `kodo hooks` | -- | Manage Claude Code hooks | Updated |
+| `kodo learn` | -- | Manage learnings | |
+| `kodo index` | -- | Manage relevance index | |
+| `kodo update` | -- | Manage kodo updates | |
+| `kodo auth` | -- | Manage authentication | |
+| `kodo mcp serve` | -- | Start MCP server (stdio transport) | New |
+| `kodo observe` | -- | Capture observation from tool output (hidden) | New |

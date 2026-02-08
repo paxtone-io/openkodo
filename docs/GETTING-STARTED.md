@@ -48,7 +48,7 @@ Download the appropriate binary from [Releases](https://github.com/paxtone-io/op
 
 ```bash
 kodo --version
-# kodo 0.1.8
+# kodo 0.2.0
 ```
 
 ---
@@ -107,7 +107,30 @@ If you use Claude Code, install lifecycle hooks for automatic context loading an
 kodo hooks install
 ```
 
-### 5. Set Up Integrations (Optional)
+### 5. Use as MCP Server (Optional)
+
+Expose your project's context to any MCP-compatible AI tool:
+
+```bash
+kodo mcp serve
+```
+
+This starts a JSON-RPC 2.0 server over stdio, exposing 5 tools (`kodo_query`, `kodo_status`, `kodo_curate`, `kodo_learn_list`, `kodo_observe`), dynamic resources via `kodo://` URIs, and guided prompts. See [CLI Reference](CLI-REFERENCE.md#kodo-mcp) for details.
+
+To configure Claude Desktop or other MCP clients:
+
+```json
+{
+  "mcpServers": {
+    "kodo": {
+      "command": "kodo",
+      "args": ["mcp", "serve"]
+    }
+  }
+}
+```
+
+### 7. Set Up Integrations (Optional)
 
 Create a `.env` file for GitHub and Notion integrations:
 
@@ -156,6 +179,7 @@ your-project/
 │   │   ├── workflows.md       # Process sequences
 │   │   ├── domain.md          # Business terms
 │   │   └── conventions.md     # Code style patterns
+│   ├── observations/          # Auto-captured tool output observations
 │   └── logs/                  # Debug logs
 └── ... (your project files)
 ```
@@ -198,10 +222,13 @@ kodo curate --interactive
 
 #### Search Context
 
-Find relevant information fast:
+Find relevant information fast with progressive disclosure:
 
 ```bash
-kodo query "authentication"
+kodo query "authentication"                        # Default: timeline detail
+kodo query "authentication" --detail compact        # Minimal (~50 tokens/result)
+kodo query "authentication" --detail full            # Complete entries
+kodo query --id architecture/api/rest-conventions   # Lookup specific entry
 kodo query "error handling" --format json --full
 kodo query --interactive
 ```
@@ -337,6 +364,7 @@ When you install kodo hooks (`kodo hooks install`), these fire automatically:
 | Event | What Happens |
 |-------|-------------|
 | **SessionStart** | Loads recent context and active learnings |
+| **PostToolUse** | Auto-captures observations from tool outputs |
 | **PreCompact** | Captures learnings before context compaction |
 | **Stop** | Captures learnings when Claude stops responding |
 | **SessionEnd** | Reminds you to run `kodo reflect` |
@@ -371,7 +399,11 @@ kodo reflect on
 # 5. Install Claude Code hooks (if using Claude)
 kodo hooks install
 
-# 6. Verify everything
+# 6. Configure as MCP server (optional, for Claude Desktop etc.)
+# Add to your MCP client config:
+#   { "command": "kodo", "args": ["mcp", "serve"] }
+
+# 7. Verify everything
 kodo status
 ```
 
@@ -473,12 +505,34 @@ kodo docs agent regenerate --force
 5. **Configure integrations**: Set up GitHub and Notion in `kodo.toml`
 6. **Join the community**: Report issues at [GitHub](https://github.com/paxtone-io/openkodo/issues)
 
+### Flow 7: MCP Server Integration
+
+Use kodo as a context provider for any MCP-compatible AI tool:
+
+```bash
+# Start MCP server (stdio transport)
+kodo mcp serve
+
+# Available MCP tools:
+# - kodo_query: Search context with progressive disclosure
+# - kodo_status: Project status and configuration
+# - kodo_curate: Add new context entries
+# - kodo_learn_list: List accumulated learnings
+# - kodo_observe: Capture observations from tool output
+
+# Available MCP resources (kodo:// URIs):
+# - kodo://context - Project context file
+# - kodo://learnings/{category} - Learning files
+# - kodo://context-tree/{domain} - Context entries
+```
+
 ### Quick Reference
 
 ```bash
 kodo status                     # Project overview
 kodo --help                     # All commands
 kodo <command> --help           # Command-specific help
+kodo mcp serve                  # Start MCP server
 kodo update check               # Check for updates
 kodo update apply               # Apply update
 ```

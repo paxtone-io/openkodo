@@ -5,10 +5,12 @@ Comprehensive guide to using OpenKodo within Claude Code via plugins, slash comm
 ## Table of Contents
 
 - [Setup](#setup)
+- [MCP Server](#mcp-server)
 - [Plugin Ecosystem](#plugin-ecosystem)
 - [Slash Commands Reference](#slash-commands-reference)
 - [Agents Reference](#agents-reference)
 - [Hook System](#hook-system)
+- [Model Role Abstraction](#model-role-abstraction)
 - [Recommended Workflows](#recommended-workflows)
 
 ---
@@ -46,6 +48,69 @@ kodo hooks install
 kodo hooks status
 kodo plugin list
 ```
+
+---
+
+## MCP Server
+
+OpenKodo v0.2.0 introduces a built-in MCP (Model Context Protocol) server, allowing any MCP-compatible AI tool to access your project's context without plugins.
+
+### Why Use MCP?
+
+- **Universal**: Works with Claude Desktop, VS Code extensions, and any MCP client
+- **No Plugin Required**: Direct access to kodo context outside of Claude Code
+- **Token-Efficient**: Progressive disclosure via `kodo_query` tool minimizes token usage
+- **Bidirectional**: AI tools can both read context and write observations
+
+### Configuration
+
+Add kodo as an MCP server in your Claude Desktop config (`~/Library/Application Support/Claude/claude_desktop_config.json`):
+
+```json
+{
+  "mcpServers": {
+    "kodo": {
+      "command": "kodo",
+      "args": ["mcp", "serve"]
+    }
+  }
+}
+```
+
+### Available MCP Tools
+
+| Tool | Description |
+|------|-------------|
+| `kodo_query` | Search context with progressive detail levels (compact/timeline/full) |
+| `kodo_status` | Show project status, learnings count, integrations, model config |
+| `kodo_curate` | Add a new context entry to the knowledge base |
+| `kodo_learn_list` | List accumulated learnings, optionally filtered by category |
+| `kodo_observe` | Capture an observation from tool output |
+
+### Available MCP Resources
+
+Dynamic resources via `kodo://` URI scheme:
+
+| URI | Description |
+|-----|-------------|
+| `kodo://context` | Project context file |
+| `kodo://learnings/{category}` | Learning files (rules, decisions, tech-stack, etc.) |
+| `kodo://context-tree/{domain}` | Context tree domain entries |
+
+### Available MCP Prompts
+
+| Prompt | Description |
+|--------|-------------|
+| `kodo-reflect` | Guided session reflection workflow |
+| `kodo-query-guide` | Guided knowledge base search |
+
+### MCP + Plugin Together
+
+The MCP server and Claude Code plugins are complementary:
+- **MCP**: Provides tools, resources, and prompts to any MCP client
+- **Plugins**: Provide slash commands, agents, and lifecycle hooks specific to Claude Code
+
+You can use both simultaneously for the richest experience.
 
 ---
 
@@ -174,65 +239,67 @@ Agents are specialized AI assistants that Claude Code can delegate work to. They
 
 ### Core Agents (kodo plugin)
 
-| Agent | Model | Role |
-|-------|-------|------|
-| `kodo-explorer` | sonnet | Fast codebase exploration and file discovery |
-| `kodo-architect` | opus | Architecture design and system-level decisions |
-| `kodo-feature` | sonnet | Feature implementation with test-driven approach |
-| `kodo-reviewer` | sonnet | Code review with confidence-based issue filtering |
-| `kodo-debugger` | sonnet | Systematic bug investigation and root cause analysis |
-| `kodo-refactor` | sonnet | Safe code restructuring with test verification |
-| `kodo-tester` | haiku | Test scaffolding and test file generation |
-| `kodo-planner` | sonnet | Implementation planning with dependency mapping |
-| `kodo-curator` | opus | Learning curation, dedup, and quality scoring |
-| `kodo-sentinel` | sonnet | Security review, vulnerability detection, OWASP checks |
-| `kodo-optimizer` | sonnet | Performance profiling and optimization recommendations |
-| `kodo-documenter` | haiku | Documentation generation and sync |
+| Agent | Role | Description |
+|-------|------|-------------|
+| `kodo-explorer` | standard | Fast codebase exploration and file discovery |
+| `kodo-architect` | premium | Architecture design and system-level decisions |
+| `kodo-feature` | standard | Feature implementation with test-driven approach |
+| `kodo-reviewer` | standard | Code review with confidence-based issue filtering |
+| `kodo-debugger` | standard | Systematic bug investigation and root cause analysis |
+| `kodo-refactor` | standard | Safe code restructuring with test verification |
+| `kodo-tester` | fast | Test scaffolding and test file generation |
+| `kodo-planner` | standard | Implementation planning with dependency mapping |
+| `kodo-curator` | premium | Learning curation, dedup, and quality scoring |
+| `kodo-sentinel` | standard | Security review, vulnerability detection, OWASP checks |
+| `kodo-optimizer` | standard | Performance profiling and optimization recommendations |
+| `kodo-documenter` | fast | Documentation generation and sync |
 
 ### Analyzer Agents (kodo-analyzer plugin)
 
-| Agent | Model | Role |
-|-------|-------|------|
-| `kodo-codebase-analyzer` | sonnet | Main orchestrator, spawns specialized sub-agents |
-| `kodo-database-analyzer` | haiku | Schema analysis, RLS, indexes |
-| `kodo-api-analyzer` | haiku | Endpoint coverage, auth, error handling |
-| `kodo-frontend-analyzer` | haiku | Component a11y, state management |
-| `kodo-dependencies-analyzer` | haiku | Outdated packages, vulnerabilities |
-| `kodo-posthog-analyzer` | haiku | Event coverage, feature flag completeness |
-| `kodo-documentation-analyzer` | haiku | Doc coverage, accuracy, staleness |
-| `kodo-security-analyzer` | sonnet | Vulnerabilities, auth, secrets, CVSS |
-| `kodo-performance-analyzer` | sonnet | Query bottlenecks, bundle size, caching |
+| Agent | Role | Description |
+|-------|------|-------------|
+| `kodo-codebase-analyzer` | standard | Main orchestrator, spawns specialized sub-agents |
+| `kodo-database-analyzer` | fast | Schema analysis, RLS, indexes |
+| `kodo-api-analyzer` | fast | Endpoint coverage, auth, error handling |
+| `kodo-frontend-analyzer` | fast | Component a11y, state management |
+| `kodo-dependencies-analyzer` | fast | Outdated packages, vulnerabilities |
+| `kodo-posthog-analyzer` | fast | Event coverage, feature flag completeness |
+| `kodo-documentation-analyzer` | fast | Doc coverage, accuracy, staleness |
+| `kodo-security-analyzer` | standard | Vulnerabilities, auth, secrets, CVSS |
+| `kodo-performance-analyzer` | standard | Query bottlenecks, bundle size, caching |
 
 ### Design Agents (kodo-design plugin)
 
-| Agent | Model | Role |
-|-------|-------|------|
-| `kodo-design-agent` | sonnet | UI component design with Design Bible principles |
-| `kodo-a11y-auditor` | sonnet | WCAG accessibility auditing |
+| Agent | Role | Description |
+|-------|------|-------------|
+| `kodo-design-agent` | standard | UI component design with Design Bible principles |
+| `kodo-a11y-auditor` | standard | WCAG accessibility auditing |
 
 ### PostHog Agents (kodo-posthog plugin)
 
-| Agent | Model | Role |
-|-------|-------|------|
-| `kodo-ph-analyst` | sonnet | Product insights from PostHog data |
-| `kodo-ph-experiment-agent` | sonnet | A/B experiment design and statistical analysis |
-| `kodo-ph-sync-agent` | haiku | PostHog-Notion configuration sync |
+| Agent | Role | Description |
+|-------|------|-------------|
+| `kodo-ph-analyst` | standard | Product insights from PostHog data |
+| `kodo-ph-experiment-agent` | standard | A/B experiment design and statistical analysis |
+| `kodo-ph-sync-agent` | fast | PostHog-Notion configuration sync |
 
 ### Supabase Agents (kodo-supabase plugin)
 
-| Agent | Model | Role |
-|-------|-------|------|
-| `kodo-supa-architect` | sonnet | Architecture decisions for Supabase features |
-| `kodo-supa-edge-agent` | sonnet | Edge Function implementation |
-| `kodo-supa-migrator` | sonnet | Database migration and schema management |
+| Agent | Role | Description |
+|-------|------|-------------|
+| `kodo-supa-architect` | standard | Architecture decisions for Supabase features |
+| `kodo-supa-edge-agent` | standard | Edge Function implementation |
+| `kodo-supa-migrator` | standard | Database migration and schema management |
 
 ### Model Strategy
 
-| Model | Cost | Use For |
-|-------|------|---------|
-| **haiku** | Low | File scaffolding, boilerplate, test generation, simple sync tasks |
-| **sonnet** | Medium | Core implementation, analysis, debugging, feature work |
-| **opus** | High | Complex architecture decisions, learning curation, ambiguous specs |
+As of v0.2.0, agents use abstract **model roles** instead of hardcoded model names. See [Model Role Abstraction](#model-role-abstraction) below.
+
+| Role | Default Model | Use For |
+|------|---------------|---------|
+| **fast** | haiku | File scaffolding, boilerplate, test generation, simple sync tasks |
+| **standard** | sonnet | Core implementation, analysis, debugging, feature work |
+| **premium** | opus | Complex architecture decisions, learning curation, ambiguous specs |
 
 ---
 
@@ -242,12 +309,16 @@ Hooks fire automatically during Claude Code sessions to keep your context fresh 
 
 ### Plugin Hooks (installed via `kodo hooks install`)
 
-| Event | Action | Description |
+| Event | Script | Description |
 |-------|--------|-------------|
-| **SessionStart** | `kodo context load --quiet` | Load recent context and active learnings at session start |
-| **PreCompact** | `kodo reflect --hook precompact --quiet` | Capture learnings before context is compacted |
-| **Stop** | `kodo reflect --hook stop --quiet` | Capture learnings when Claude stops responding |
-| **SessionEnd** | Prompt reminder | Reminds you to run `kodo reflect` |
+| **SessionStart** | `kodo-session-start.sh` | Load recent context and active learnings at session start |
+| **UserPromptSubmit** | `kodo-message-count.sh` | Track message count for time/count-based auto-reflection |
+| **PostToolUse** | `kodo-observe.sh` | Auto-capture observations from tool outputs into `.kodo/observations/` |
+| **PreCompact** | `kodo-reflect.sh` | Capture learnings before context is compacted |
+| **Stop** | `kodo-reflect.sh` | Capture learnings when Claude stops responding |
+| **SubagentStop** | `kodo-reflect.sh` | Capture subagent-specific learnings |
+
+The **PostToolUse observation hook** (new in v0.2.0) silently captures tool outputs in the background, compressing them to ~500 tokens and extracting file references and key concepts. These observations feed into the learning pipeline for richer context.
 
 ### Safety Hooks (installed via `.claude/settings.json`)
 
@@ -281,6 +352,40 @@ You can add project-specific hooks in `.claude/settings.json`:
 ```
 
 Hook scripts receive JSON on stdin with tool input details. Exit code 0 allows the action; exit code 1 blocks it (PreToolUse only).
+
+---
+
+## Model Role Abstraction
+
+New in v0.2.0, the **Model Role Abstraction Layer** decouples agent definitions from specific model names. Instead of hardcoding "haiku", "sonnet", or "opus", agents reference semantic roles.
+
+### Roles
+
+| Role | Description | Default Model |
+|------|-------------|---------------|
+| **fast** | Fastest, cheapest model for scaffolding and boilerplate | `haiku` |
+| **standard** | Balanced model for core implementation work | `sonnet` |
+| **premium** | Most capable model for complex analysis and architecture | `opus` |
+
+### Configuration
+
+Override default model mappings in `kodo.toml`:
+
+```toml
+[models]
+fast = "haiku"          # Map fast role to haiku
+standard = "sonnet"     # Map standard role to sonnet
+premium = "opus"        # Map premium role to opus
+```
+
+This lets you:
+- Swap models as new versions release (e.g., `standard = "sonnet-4.5"`)
+- Use cheaper models during development and premium models for production
+- Upgrade all agents at once by changing one config value
+
+### Legacy Compatibility
+
+Existing agent definitions using direct model names (`haiku`, `sonnet`, `opus`) are automatically mapped to the corresponding role via `ModelRole::from_legacy()`. No changes needed to existing plugins.
 
 ---
 
@@ -359,6 +464,10 @@ Hook scripts receive JSON on stdin with tool input details. Exit code 0 allows t
 
 - **Session Start**: Hooks automatically load context - you start with full project knowledge
 - **Session End**: Hooks auto-capture learnings, but running `kodo reflect` manually gives more thorough capture
+- **Observations**: The PostToolUse hook silently captures tool outputs - these build up a rich observation history in `.kodo/observations/`
 - **Search Before Asking**: Use `/kodo-query` to check if knowledge already exists before asking questions
+- **Use Compact Detail**: When tokens are limited, use `--detail compact` in queries for ~50 tokens per result
 - **Combine CLI and Slash Commands**: Use `kodo analyze` in terminal and `/kodo-brainstorm` in Claude Code - they share the same `.kodo/` knowledge base
+- **MCP + Plugins**: Use `kodo mcp serve` for universal MCP access and plugins for Claude Code-specific features
+- **Model Customization**: Override model mappings in `kodo.toml` `[models]` to swap models as new versions release
 - **Review Learnings Periodically**: Run `kodo learn review` to promote good learnings and discard noise

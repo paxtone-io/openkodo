@@ -154,17 +154,39 @@ You are a specialized agent for [domain].
 |-------|----------|-------------|
 | `name` | Yes | Agent identifier (kodo-{role} pattern) |
 | `description` | Yes | What the agent does (shown in agent list) |
-| `model` | Yes | AI model: `haiku`, `sonnet`, or `opus` |
+| `model` | Yes | Model role: `fast`, `standard`, or `premium` (legacy: `haiku`, `sonnet`, `opus`) |
 | `tools` | Yes | Available tools: Read, Write, Edit, Bash, Glob, Grep, WebFetch, etc. |
 | `color` | No | Terminal color for output: cyan, blue, magenta, green, red, orange, purple, yellow, bright_yellow, bright_red, bright_magenta, bright_white |
 
 ### Model Selection
 
-| Model | Cost | Use For |
-|-------|------|---------|
-| `haiku` | Low | File scaffolding, boilerplate, simple sync, test generation |
-| `sonnet` | Medium | Core implementation, analysis, feature work, debugging |
-| `opus` | High | Complex architecture, learning curation, ambiguous specs |
+As of v0.2.0, agents use abstract **model roles** that resolve to concrete models via `kodo.toml` configuration.
+
+| Role | Default Model | Use For |
+|------|---------------|---------|
+| `fast` | haiku | File scaffolding, boilerplate, simple sync, test generation |
+| `standard` | sonnet | Core implementation, analysis, feature work, debugging |
+| `premium` | opus | Complex architecture, learning curation, ambiguous specs |
+
+In agent frontmatter, use roles instead of model names:
+
+```markdown
+---
+name: my-agent
+model: standard    # Resolves to "sonnet" by default
+---
+```
+
+Legacy model names (`haiku`, `sonnet`, `opus`) are still supported and automatically mapped to the corresponding role.
+
+Users can override model mappings in `kodo.toml`:
+
+```toml
+[models]
+fast = "haiku"
+standard = "sonnet"
+premium = "opus"
+```
 
 ## Creating Skills
 
@@ -433,6 +455,30 @@ cat my-plugin/.claude-plugin/plugin.json | jq .
 - Use semantic versioning (MAJOR.MINOR.PATCH)
 - Document changes in CHANGELOG.md
 
+## MCP Integration
+
+Plugins can complement the built-in MCP server (`kodo mcp serve`). While the MCP server exposes core kodo tools and resources to any MCP client, plugins add Claude Code-specific capabilities (slash commands, agents, hooks).
+
+### When to Use MCP vs Plugins
+
+| Feature | MCP Server | Plugin |
+|---------|-----------|--------|
+| **Tools** | `kodo_query`, `kodo_curate`, etc. | Slash commands, agents |
+| **Resources** | `kodo://` URI scheme | Reference docs in `skills/*/references/` |
+| **Hooks** | N/A | Lifecycle hooks (SessionStart, PostToolUse, etc.) |
+| **Client** | Any MCP client | Claude Code only |
+| **Setup** | JSON config | `/plugin` marketplace |
+
+### Accessing MCP from Plugins
+
+Plugin hooks and agents can invoke the MCP server's tools programmatically by calling the `kodo` CLI directly:
+
+```bash
+# In a hook script, use kodo commands that the MCP server also exposes
+kodo query "my search" --detail compact --format json
+kodo curate --domain api --topic auth "New pattern discovered"
+```
+
 ## Best Practices
 
 1. **Single Responsibility** - Each plugin should focus on one domain
@@ -441,7 +487,8 @@ cat my-plugin/.claude-plugin/plugin.json | jq .
 4. **Non-Destructive** - Don't modify user files without confirmation
 5. **Testable** - Include examples that can be tested
 6. **Consistent Naming** - Follow `kodo-{role}` for agents, hyphen-separated for commands
-7. **Right-Sized Models** - Use haiku for simple tasks, sonnet for standard, opus for complex
+7. **Use Model Roles** - Use `fast`, `standard`, `premium` instead of hardcoded model names
+8. **Token Efficiency** - Use compact detail level in automated queries to minimize token usage
 
 ## Example Plugins
 
