@@ -1,6 +1,6 @@
 {
   "name": "kodo",
-  "version": "0.1.12",
+  "version": "0.2.0",
   "description": "Kodo CLI integration for Claude Code - universal process skills and self-learning",
   "author": {
     "name": "Mack Górski",

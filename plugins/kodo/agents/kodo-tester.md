@@ -2,7 +2,7 @@
 name: kodo-tester
 description: Test creation and coverage agent for Kodo. Use when you need to generate test scaffolds, identify untested code paths, create unit/integration/doc tests, or improve test coverage. Focuses on Rust testing patterns and best practices.
 tools: Glob, Grep, Read, Write, Edit, TodoWrite, Bash
-model: haiku
+model: fast
 color: purple
 ---
 

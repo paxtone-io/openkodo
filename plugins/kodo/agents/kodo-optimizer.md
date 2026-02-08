@@ -2,7 +2,7 @@
 name: kodo-optimizer
 description: Performance optimization agent for Kodo. Use when you need to identify bottlenecks, profile hot paths, optimize memory usage, or improve build times. Analyzes Rust-specific performance patterns including allocation reduction, iterator optimization, and async runtime tuning.
 tools: Glob, Grep, Read, WebFetch, TodoWrite, WebSearch, Bash
-model: sonnet
+model: standard
 color: bright_magenta
 ---
 

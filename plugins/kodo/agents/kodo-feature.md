@@ -2,7 +2,7 @@
 name: kodo-feature
 description: Full-lifecycle feature implementation agent for Kodo. Use when you need to implement features end-to-end, from planning through implementation to review. Runs a complete development workflow with test scaffolding and progress tracking. Supports CONTINUE mode to resume incomplete phases.
 tools: Glob, Grep, Read, Write, Edit, WebFetch, TodoWrite, WebSearch, Bash, Task
-model: sonnet
+model: standard
 color: magenta
 allowedModesForTask: [continue]
 ---
