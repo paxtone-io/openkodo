@@ -1,55 +1,5 @@
 {
   "name": "kodo-analyzer",
   "version": "0.1.12",
-  "description": "Codebase analysis: security, performance, documentation gaps",
-  "agents": [
-    {
-      "name": "kodo-codebase-analyzer",
-      "file": "agents/kodo-codebase-analyzer.md"
-    },
-    {
-      "name": "kodo-database-analyzer",
-      "file": "agents/analyzers/kodo-database-analyzer.md"
-    },
-    {
-      "name": "kodo-api-analyzer",
-      "file": "agents/analyzers/kodo-api-analyzer.md"
-    },
-    {
-      "name": "kodo-frontend-analyzer",
-      "file": "agents/analyzers/kodo-frontend-analyzer.md"
-    },
-    {
-      "name": "kodo-dependencies-analyzer",
-      "file": "agents/analyzers/kodo-dependencies-analyzer.md"
-    },
-    {
-      "name": "kodo-posthog-analyzer",
-      "file": "agents/analyzers/kodo-posthog-analyzer.md"
-    },
-    {
-      "name": "kodo-documentation-analyzer",
-      "file": "agents/analyzers/kodo-documentation-analyzer.md"
-    },
-    {
-      "name": "kodo-security-analyzer",
-      "file": "agents/analyzers/kodo-security-analyzer.md"
-    },
-    {
-      "name": "kodo-performance-analyzer",
-      "file": "agents/analyzers/kodo-performance-analyzer.md"
-    }
-  ],
-  "skills": [
-    {
-      "name": "analyzer",
-      "command": "/kodo-analyze",
-      "description": "Comprehensive codebase analysis and health scoring methodology"
-    },
-    {
-      "name": "deep-analyze",
-      "command": "/kodo-deep-analyze",
-      "description": "Deep analysis: extract full content and learnings from documentation"
-    }
-  ]
+  "description": "Codebase analysis: security, performance, documentation gaps"
 }
