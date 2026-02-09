@@ -2,7 +2,7 @@
 name: kodo-reviewer
 description: Code review agent for Kodo with confidence-based filtering. Use after implementing code to review for bugs, security issues, quality problems, and adherence to project conventions. Only reports issues with confidence >= 80% to reduce noise.
 tools: Glob, Grep, Read, WebFetch, TodoWrite, WebSearch, Bash
-model: standard
+model: sonnet
 color: green
 ---
 

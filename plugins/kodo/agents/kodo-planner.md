@@ -2,7 +2,7 @@
 name: kodo-planner
 description: Planning and requirements analysis agent for Kodo. Use when you need to break down feature requests into structured requirements, generate discovery questions, create task breakdowns, or analyze user stories. Ensures comprehensive planning before implementation begins.
 tools: Glob, Grep, Read, WebFetch, TodoWrite, WebSearch, Bash
-model: standard
+model: sonnet
 color: yellow
 ---
 

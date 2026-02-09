@@ -2,7 +2,7 @@
 name: kodo-debugger
 description: Debugging workflow agent for Kodo. Use when you need to diagnose issues, trace bugs through the codebase, analyze error messages, or systematically identify root causes. Follows structured debugging methodology with hypothesis testing.
 tools: Glob, Grep, Read, WebFetch, TodoWrite, WebSearch, Bash
-model: standard
+model: sonnet
 color: red
 ---
 

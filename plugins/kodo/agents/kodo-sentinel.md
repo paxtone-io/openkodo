@@ -2,7 +2,7 @@
 name: kodo-sentinel
 description: Security review agent for Kodo. Use when you need to audit code for security vulnerabilities, credential leaks, unsafe deserialization, dependency risks, or supply chain concerns. Focuses on Rust-specific security patterns and OWASP considerations. Reports only confirmed issues with evidence.
 tools: Glob, Grep, Read, WebFetch, TodoWrite, WebSearch, Bash
-model: standard
+model: sonnet
 color: bright_red
 ---
 

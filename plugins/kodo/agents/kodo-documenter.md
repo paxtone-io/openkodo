@@ -2,7 +2,7 @@
 name: kodo-documenter
 description: Documentation generation agent for Kodo. Use when you need to generate or update doc comments for public APIs, create module-level documentation, or ensure documentation coverage. Focuses on Rust documentation patterns including doc tests, examples, and module docs.
 tools: Glob, Grep, Read, Write, Edit, TodoWrite, Bash
-model: fast
+model: haiku
 color: bright_white
 ---
 

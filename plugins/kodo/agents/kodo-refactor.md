@@ -2,7 +2,7 @@
 name: kodo-refactor
 description: Safe refactoring agent for Kodo. Use when you need to restructure code, extract modules, rename symbols, or improve code organization. Ensures test coverage before refactoring and preserves public APIs. Follows incremental, safe refactoring practices.
 tools: Glob, Grep, Read, Write, Edit, WebFetch, TodoWrite, WebSearch, Bash
-model: standard
+model: sonnet
 color: orange
 ---
 

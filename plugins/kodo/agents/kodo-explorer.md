@@ -2,7 +2,7 @@
 name: kodo-explorer
 description: Deep codebase analysis agent for Kodo. Use when you need to trace implementations, understand existing patterns, map architecture layers, or analyze how features are structured. Launch 2-3 instances in parallel for comprehensive exploration.
 tools: Glob, Grep, Read, WebFetch, TodoWrite, WebSearch, Bash
-model: standard
+model: sonnet
 color: cyan
 ---
 

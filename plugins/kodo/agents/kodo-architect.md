@@ -2,7 +2,7 @@
 name: kodo-architect
 description: Architecture design agent for Kodo. Use when you need to design feature implementations, plan database schemas, design API structures, or make architectural decisions. Launch 2-3 instances to explore different approaches.
 tools: Glob, Grep, Read, WebFetch, TodoWrite, WebSearch, Bash
-model: standard
+model: sonnet
 color: blue
 ---
 

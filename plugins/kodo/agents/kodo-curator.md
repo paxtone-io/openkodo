@@ -2,7 +2,7 @@
 name: kodo-curator
 description: Learning curation agent for Kodo. Use when accumulated learnings need review, deduplication, promotion, or pruning. Analyzes .kodo/learnings/ files to identify high-value patterns, merge duplicates, promote medium-confidence entries, and archive stale knowledge. Essential for keeping the learning base useful as it grows.
 tools: Glob, Grep, Read, Write, Edit, TodoWrite, Bash
-model: premium
+model: opus
 color: bright_yellow
 ---
 
