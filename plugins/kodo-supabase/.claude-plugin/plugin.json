@@ -1,6 +1,6 @@
 {
   "name": "kodo-supabase",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "description": "Supabase integration: databases, migrations, Edge Functions",
   "author": {
     "name": "Mack Górski",

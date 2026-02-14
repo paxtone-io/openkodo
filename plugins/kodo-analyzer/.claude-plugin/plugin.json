@@ -1,6 +1,6 @@
 {
   "name": "kodo-analyzer",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "description": "Comprehensive codebase analysis for health checks, gap detection, security audits, and recommendations",
   "author": {
     "name": "Mack Górski",
