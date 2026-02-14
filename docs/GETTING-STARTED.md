@@ -48,7 +48,7 @@ Download the appropriate binary from [Releases](https://github.com/paxtone-io/op
 
 ```bash
 kodo --version
-# kodo 0.2.0
+# kodo 0.2.3
 ```
 
 ---
@@ -147,6 +147,23 @@ kodo auth status    # Show what's configured
 kodo auth verify    # Test API connections
 kodo auth setup     # Show setup instructions
 ```
+
+### 8. Updating kodo
+
+kodo auto-checks for updates in the background. When you update the binary, your project files may need updating too. kodo detects this automatically:
+
+```
+Notice: Project files from kodo v0.2.0 (current: v0.2.3). Run kodo migrate to update.
+```
+
+To update project files:
+
+```bash
+kodo migrate --dry-run          # Preview what would change
+kodo migrate                    # Apply changes (with backup)
+```
+
+This safely merges new template sections into your kodo.toml and CLAUDE.md while preserving your customizations.
 
 ---
 
@@ -533,6 +550,8 @@ kodo status                     # Project overview
 kodo --help                     # All commands
 kodo <command> --help           # Command-specific help
 kodo mcp serve                  # Start MCP server
-kodo update check               # Check for updates
-kodo update apply               # Apply update
+kodo update check               # Check for CLI updates
+kodo update apply               # Apply CLI update
+kodo migrate                    # Update project files after CLI update
+kodo migrate --dry-run          # Preview project file changes
 ```

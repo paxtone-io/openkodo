@@ -1,6 +1,6 @@
 # CLI Reference
 
-Complete command reference for the `kodo` CLI v0.2.0.
+Complete command reference for the `kodo` CLI v0.2.3.
 
 ## Table of Contents
 
@@ -24,6 +24,7 @@ Complete command reference for the `kodo` CLI v0.2.0.
   - [kodo learn](#kodo-learn)
   - [kodo index](#kodo-index)
   - [kodo update](#kodo-update)
+  - [kodo migrate](#kodo-migrate)
   - [kodo auth](#kodo-auth)
   - [kodo mcp](#kodo-mcp)
   - [kodo observe](#kodo-observe)
@@ -75,7 +76,7 @@ kodo init [OPTIONS]
 
 **Creates:**
 
-- `kodo.toml` - Project configuration (in project root)
+- `kodo.toml` - Project configuration with `kodo_version` tracking (in project root)
 - `AGENTS.md` - Industry-standard AI agent instructions
 - `.kodo/` directory containing:
   - `context-tree/` - Hierarchical knowledge storage
@@ -724,6 +725,54 @@ kodo update config --show           # Show current config
 
 ---
 
+### `kodo migrate`
+
+Update project files to match the current CLI version. When you update the kodo binary, your project files (kodo.toml, CLAUDE.md) may become stale. This command detects drift and applies updates safely.
+
+```bash
+kodo migrate [OPTIONS]
+```
+
+**Options:**
+
+| Option | Description |
+|--------|-------------|
+| `--dry-run` | Show what would change without modifying files |
+| `-y, --yes` | Skip confirmation prompt (auto-confirm) |
+| `--resume` | Resume an interrupted migration |
+
+**Behavior:**
+
+1. Computes a diff of what needs to change (missing sections in kodo.toml, template updates in CLAUDE.md, missing `.kodo/` subdirectories)
+2. Shows the diff with change types: `CREATE`, `MODIFY`, `UPDATE`, `OK`
+3. Prompts for confirmation (unless `--yes`)
+4. Creates a timestamped backup in `.kodo/backups/migration_YYYYMMDD_HHMMSS/`
+5. Applies changes step by step with state persistence
+6. Stamps `kodo_version` in kodo.toml to record the current CLI version
+
+If interrupted (e.g., power loss), the migration can be resumed with `--resume`.
+
+**Version Drift Detection:**
+
+On startup, kodo checks if the project's `kodo_version` differs from the CLI version. If drift is detected, a notice is printed to stderr:
+
+```
+Notice: Project files from kodo v0.2.0 (current: v0.2.3). Run kodo migrate to update.
+```
+
+This notice is suppressed for `kodo mcp serve` and `kodo migrate` commands.
+
+**Examples:**
+
+```bash
+kodo migrate --dry-run          # Preview changes
+kodo migrate                    # Interactive migration with confirmation
+kodo migrate --yes              # Auto-confirm, create backup, apply
+kodo migrate --resume           # Resume interrupted migration
+```
+
+---
+
 ### `kodo auth`
 
 Manage authentication for integrations.
@@ -899,6 +948,7 @@ The `kodo.toml` file is created in your project root by `kodo init`:
 name = "my-project"       # Project name (used in cloud sync)
 description = "A brief description of your project"
 version = "0.1.0"         # Project version
+kodo_version = "0.2.3"    # CLI version that last generated/updated these files (auto-managed)
 
 [tech_stack]
 languages = ["rust", "typescript"]
@@ -1013,26 +1063,27 @@ OPENAI_API_KEY=sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 ## All Commands
 
-| Command | Alias | Description | New in v0.2.0? |
-|---------|-------|-------------|----------------|
-| `kodo init` | -- | Initialize a new kodo project | |
-| `kodo analyze` | `kodo a` | Analyze codebase and generate context | |
-| `kodo extract` | `kodo x` | Extract learnings from a single file | |
-| `kodo reflect` | `kodo r` | Capture learnings from coding sessions | |
-| `kodo curate` | `kodo c` | Add or manage context entries | |
-| `kodo import` | `kodo i` | Import markdown files into context tree | |
-| `kodo query` | `kodo q` | Search accumulated context | Updated |
-| `kodo status` | -- | Show project status | |
-| `kodo sync` | -- | Synchronize context with Git/cloud | |
-| `kodo track` | `kodo t` | Track items in GitHub Projects | |
-| `kodo docs` | `kodo d` | Manage documentation | |
-| `kodo flow` | `kodo f` | Intelligent content routing | |
-| `kodo plugin` | `kodo p` | Manage domain plugins | |
-| `kodo context` | -- | Context management for session hooks | |
-| `kodo hooks` | -- | Manage Claude Code hooks | Updated |
-| `kodo learn` | -- | Manage learnings | |
-| `kodo index` | -- | Manage relevance index | |
-| `kodo update` | -- | Manage kodo updates | |
-| `kodo auth` | -- | Manage authentication | |
-| `kodo mcp serve` | -- | Start MCP server (stdio transport) | New |
-| `kodo observe` | -- | Capture observation from tool output (hidden) | New |
+| Command | Alias | Description |
+|---------|-------|-------------|
+| `kodo init` | -- | Initialize a new kodo project |
+| `kodo analyze` | `kodo a` | Analyze codebase and generate context |
+| `kodo extract` | `kodo x` | Extract learnings from a single file |
+| `kodo reflect` | `kodo r` | Capture learnings from coding sessions |
+| `kodo curate` | `kodo c` | Add or manage context entries |
+| `kodo import` | `kodo i` | Import markdown files into context tree |
+| `kodo query` | `kodo q` | Search accumulated context |
+| `kodo status` | -- | Show project status |
+| `kodo sync` | -- | Synchronize context with Git/cloud |
+| `kodo track` | `kodo t` | Track items in GitHub Projects |
+| `kodo docs` | `kodo d` | Manage documentation |
+| `kodo flow` | `kodo f` | Intelligent content routing |
+| `kodo plugin` | `kodo p` | Manage domain plugins |
+| `kodo context` | -- | Context management for session hooks |
+| `kodo hooks` | -- | Manage Claude Code hooks |
+| `kodo learn` | -- | Manage learnings |
+| `kodo index` | -- | Manage relevance index |
+| `kodo update` | -- | Manage kodo updates |
+| `kodo migrate` | -- | Update project files to match current CLI version |
+| `kodo auth` | -- | Manage authentication |
+| `kodo mcp serve` | -- | Start MCP server (stdio transport) |
+| `kodo observe` | -- | Capture observation from tool output (hidden) |

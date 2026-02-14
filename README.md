@@ -78,6 +78,9 @@ kodo curate --topic architecture "We use a hexagonal architecture pattern"
 
 # Analyze codebase
 kodo analyze --tech-stack --architecture
+
+# After updating kodo CLI, update project files
+kodo migrate
 ```
 
 ## Documentation
