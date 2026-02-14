@@ -1,6 +1,6 @@
 {
   "name": "openkodo",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "OpenKodo - Context management CLI and self-learning system for AI coding tools",
   "owner": {
     "name": "Mack Górski",

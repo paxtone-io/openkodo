@@ -1,5 +1,5 @@
 {
   "name": "kodo-analyzer",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Codebase analysis: security, performance, documentation gaps"
 }

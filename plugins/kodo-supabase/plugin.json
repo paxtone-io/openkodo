@@ -1,6 +1,6 @@
 {
   "name": "kodo-supabase",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Supabase integration for database, auth, edge functions, and hybrid ORM workflows across TypeScript, Python, and Rust",
   "author": "OpenKodo",
   "repository": "https://github.com/openkodo/kodo",
